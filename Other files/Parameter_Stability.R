@@ -1,36 +1,13 @@
 library(evir)
-source("_gpd.R")
+source("helper_functions.R")
 
-GPD_LL<-function(par,z){
-  sigma<-par[1]
-  xi<-par[2]
-  if(sigma>0){
-    if(abs(xi)<1e-10){
-      return(-length(z)*log(sigma)-((1/sigma)*sum(z)))
-    }
-    else{
-      if( all(1+(xi*z)/sigma >0)){
-        return(-(length(z)*log(sigma))-((1+1/xi)*(sum(log(1+(xi*z)/sigma)))))
-      }
-      else{
-        return(-1e6)
-      }
-    }
-  }
-  else{
-    return(-1e7)
-  }
-}
-
-shapestab <- function (data, thresholds, reverse = TRUE,#models = 30, start = 15, end = 500,, 
-                       ci = 0.95, auto.scale = TRUE, labels = TRUE) 
+shapestab <- function (data, thresholds, reverse = TRUE, ci = 0.95, auto.scale = TRUE, labels = TRUE) 
 {
   data <- as.numeric(data)
   qq <- 0
   if (ci) 
     qq <- qnorm(1 - (1 - ci)/2)
-  x <- thresholds #trunc(seq(from = length(data[threshold, to = start, 
-  #length = models))
+  x <- thresholds
   gpd.dummy <- function(thr, data) {
     out <- gpd(data = data, threshold = thr, information = "expected")
     c(out$n.exceed, out$par.ests[1], out$par.ses[1])
@@ -66,9 +43,6 @@ shapestab <- function (data, thresholds, reverse = TRUE,#models = 30, start = 15
   }
   if (labels) {
     labely <- expression(paste("",hat(xi)))
-    # if (ci) 
-    #   labely <- paste(labely, " (CI, p = ", ci, ")", 
-    #                   sep = "")
     title(xlab = "Threshold", ylab = labely)
     mtext("Quantile", side = 3, line = 3)
   }
