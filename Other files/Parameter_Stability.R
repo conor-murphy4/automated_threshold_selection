@@ -182,7 +182,7 @@ scalestab <- function (data, thresholds, reverse = TRUE,#models = 30, start = 15
 
 #----------------------------------Plots------------------------------------
 dev.new(width=9.17, height=5.53,noRStudioGD = TRUE)
-par(mfrow=c(1,3),bg='transparent')
+par(mfrow=c(1,1),bg='transparent')
 set.seed(12345)
 dat1 <- runif(200, 0.5, 1.0)
 dat2 <- rgpd(1000, shape=0.1, scale=0.5, mu=1.0)
@@ -206,9 +206,11 @@ data_all <- rgpd(4000, shape=0.1, scale=0.5, mu=0)
 cens_thr<-1.0*rbeta(length(data_all),1,0.5)
 keep <- data_all>cens_thr
 data_keep <- data_all[keep]
-data <- sample(data_keep, 1000, replace = FALSE)
+data <- sample(data_keep, 200, replace = FALSE)
+Q <-  seq(0,0.95,by=0.05)
 thresh <- quantile(data, seq(0,0.95,by=0.05), names=FALSE)
-shapestab(data, thresholds = thresh, reverse = F)
+shapestab(data, thresholds = thresh, reverse=F)
+shapestabboot(data, thresholds = thresh, Q=Q, reverse=F, boot=TRUE,m.boot=200)
 
 install.packages("mev")
 library(mev)
