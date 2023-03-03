@@ -14,7 +14,7 @@ closely modelled by a Generalised Pareto distribution (GPD).
 ## Motivation
 
 This method assumes data is independent and identically distributed. The
-function `thr_dist` selects a threshold from the set of proposed
+function `thresh_qq_metric` selects a threshold from the set of proposed
 thresholds which allows for excesses to be modelled closely by a GPD
 while also accounting for parameter estimation uncertainty.
 

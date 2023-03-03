@@ -224,4 +224,58 @@ pred=dan2001C$thr
 (bias <- bias(1.0, pred))
 (var <- variance(pred))
 
+#Case 1
+diff_mythrI <- mythrI$thr-1
+best80 <- diff_mythrI[abs(diff_mythrI) <= quantile(abs(diff_mythrI), 0.8)]
+rmse(0,best80)
 
+err <- is.na(wadsthrI$thr)
+diff_wadsthrI <- wadsthrI$thr[!err]-1
+best80 <- diff_wadsthrI[abs(diff_wadsthrI) <= quantile(abs(diff_wadsthrI), 0.8)]
+rmse(0,best80)
+
+diff_norththrI <- norththrI$thr-1
+best80 <- diff_norththrI[abs(diff_norththrI) <= quantile(abs(diff_norththrI), 0.8)]
+rmse(0,best80)
+
+#Case 2
+diff_mythrI1 <- mythrI1$thr-1
+best80 <- diff_mythrI1[abs(diff_mythrI1) <= quantile(abs(diff_mythrI1), 0.8)]
+rmse(0,best80)
+
+err <- is.na(wadsthrI1$thr)
+diff_wadsthrI1 <- wadsthrI1$thr[!err]-1
+best80 <- diff_wadsthrI1[abs(diff_wadsthrI1) <= quantile(abs(diff_wadsthrI1), 0.8)]
+rmse(0,best80)
+
+diff_norththrI1 <- norththrI1$thr-1
+best80 <- diff_norththrI1[abs(diff_norththrI1) <= quantile(abs(diff_norththrI1), 0.8)]
+rmse(0,best80)
+
+#Case 3
+diff_mythrI2 <- mythrI2$thr-1
+best80 <- diff_mythrI2[abs(diff_mythrI2) <= quantile(abs(diff_mythrI2), 0.8)]
+rmse(0,best80)
+
+err <- is.na(wadsthrI2$thr)
+diff_wadsthrI2 <- wadsthrI2$thr[!err]-1
+best80 <- diff_wadsthrI2[abs(diff_wadsthrI2) <= quantile(abs(diff_wadsthrI2), 0.8)]
+rmse(0,best80)
+
+diff_norththrI2 <- norththrI2$thr-1
+best80 <- diff_norththrI2[abs(diff_norththrI2) <= quantile(abs(diff_norththrI2), 0.8)]
+rmse(0,best80)
+
+#Case 4
+diff_mythrC <- mythrC$thr-1
+best80 <- diff_mythrC[abs(diff_mythrC) <= quantile(abs(diff_mythrC), 0.8)]
+rmse(0,best80)
+
+err <- is.na(wadsthrC$thr)
+diff_wadsthrC <- wadsthrC$thr[!err]-1
+best80 <- diff_wadsthrC[abs(diff_wadsthrC) <= quantile(abs(diff_wadsthrC), 0.8)]
+rmse(0,best80)
+
+diff_norththrC <- norththrC$thr-1
+best80 <- diff_norththrC[abs(diff_norththrC) <= quantile(abs(diff_norththrC), 0.8)]
+rmse(0,best80)

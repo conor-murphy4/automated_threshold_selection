@@ -23,7 +23,7 @@ R code to estimate a constant threshold, the excesses of which can be closely mo
 
 ## Motivation 
 
-This method assumes data is independent and identically distributed. The function `thr_dist` selects a threshold from the set of proposed thresholds which allows for excesses to be modelled closely by a GPD while also accounting for parameter estimation uncertainty. 
+This method assumes data is independent and identically distributed. The function `thresh_qq_metric` selects a threshold from the set of proposed thresholds which allows for excesses to be modelled closely by a GPD while also accounting for parameter estimation uncertainty. 
 
 When selecting a threshold for a particular dataset, there is a bias-variance trade-off which needs to be addressed. Too low a threshold is likely to violate the asymptotic basis of the GPD which would lead to bias in the fit of the model while choosing too high a threshold would generate very few exceedances with which the model can be estimated, leading to high parameter uncertainty. Thus, we want to choose as low a threshold as possible subject to the GPD providing a reasonable fit to the data. Using simulated data, our method has been shown to directly tackle this trade-off.
 
