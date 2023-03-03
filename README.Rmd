@@ -77,3 +77,7 @@ thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
 example2 <- thresh_qq_metric(data_test2,thresh = thresholds2)
 example2
 ```
+
+##Contact
+
+If you have any questions, please contact c.murphy4@lancaster.ac.uk. Please include "Threshold Code" in the subject of the email.

@@ -135,3 +135,8 @@ example2
 #> [13] 0.01930755 0.02121212 0.02478849 0.02826063 0.02996687 0.03359736
 #> [19] 0.04577595 0.05846480
 ```
+
+\##Contact
+
+If you have any questions, please contact <c.murphy4@lancaster.ac.uk>.
+Please include “Threshold Code” in the subject of the email.
