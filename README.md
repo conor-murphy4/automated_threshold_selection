@@ -8,8 +8,20 @@
 
 # Threshold selection for univariate extremes
 
-R code to estimate a constant threshold, the excesses of which can be
-closely modelled by a Generalised Pareto distribution (GPD).
+R code used in threshold selection paper.
+
+## Repository Overview
+
+`thresh_qq_metric.R` contains R code to estimate a constant threshold,
+the excesses of which can be closely modelled by a Generalised Pareto
+distribution (GPD).
+
+`helper_functions.R` contains functions for the GPD which feed into
+`thresh_qq_metric.R`.
+
+`Other files` contains all files for plotting and results in the
+threshold selection paper. The paper and these files are still in
+development.
 
 ## Motivation
 
@@ -82,12 +94,12 @@ $$d = \frac{1}{k} \sum_{i = 1}^{k} d_{(i)}.$$
 ## Example Usage
 
 ``` r
-source("helper_functions.R")
+
 source("thresh_qq_metric.R")
 set.seed(12345)
 data_test1 <- rgpd(1000, shape = 0.1, scale=0.5, mu=1)
 thresholds1 <- seq(0.5, 2.5, by=0.1)
-example1 <- thresh_qq_metric(data_test1, thresh = thresholds1)
+example1 <- thresh_qq_metric(data_test1, thresh = thresholds1, k=100, m=500)
 example1
 #> $thresh
 #> [1] 1
@@ -104,6 +116,7 @@ example1
 #> [13] 0.03300269 0.03778108 0.03648707 0.03843098 0.04221289 0.04716345
 #> [19] 0.04875931 0.05445418 0.05990898
 plot(thresholds1, example1$dists, xlab="Threshold", ylab="Metric value")
+abline(v=example1$thresh, col="red", lwd=2)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
@@ -117,7 +130,7 @@ cens_thr<-u*rbeta(length(test2),1,0.5)
 keep <- test2>cens_thr
 data_test2 <- test2[keep]
 thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
-example2 <- thresh_qq_metric(data_test2,thresh = thresholds2)
+example2 <- thresh_qq_metric(data_test2,thresh = thresholds2, k=100, m=500)
 example2
 #> $thresh
 #>       45% 
@@ -134,9 +147,13 @@ example2
 #>  [7] 0.04160290 0.03248768 0.02702868 0.01690360 0.01708816 0.01835272
 #> [13] 0.01930755 0.02121212 0.02478849 0.02826063 0.02996687 0.03359736
 #> [19] 0.04577595 0.05846480
+plot(thresholds2, example2$dists, xlab="Threshold", ylab="Metric value")
+abline(v=example2$thresh, col="red", lwd=2)
 ```
 
-\##Contact
+![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
+
+## Contact
 
 If you have any questions, please contact <c.murphy4@lancaster.ac.uk>.
 Please include “Threshold Code” in the subject of the email.
