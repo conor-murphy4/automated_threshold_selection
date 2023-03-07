@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-  - family-names: Murphy
-    given-names: Conor
+  - family-names: Murphy, Tawn
+    given-names: Conor, Jonathan A.
 title: "Threshold selection"
 date-released: 2023-02-10
