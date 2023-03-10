@@ -1,16 +1,17 @@
-# Load helper functions for working with the generalised Pareto distribution
-source('helper_functions.R')
+source("helper_functions.R")
 
 #-----------------------------------------------------------------------
 
-#' Threshold selection method for univariate extremes
+#' Combined Model and threshold selection method for univariate extremes
 #'
-#' 'thresh_qq_metric' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
+#' 'model_thresh_select' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
 #'
 #' @author Conor Murphy
 #'
 #' @param data A numeric vector.
-#' @param thresh A numeric vector of proposed thresholds to test.
+#' @param thresh A numeric vector of proposed constant thresholds to test.
+#' @param A A numeric vector of proposed values for a when threshold is of the form a + bsinct
+#' @param B A numeric vector of proposed values for b when threshold is of the form a + bsinct
 #' @param k  A positive integer denoting the number of bootstraps.
 #' @param m A positive integer denoting the number of equally-spaced probabilities at which to evaluate quantiles.
 #'
@@ -32,15 +33,18 @@ source('helper_functions.R')
 #' (example2 <- thresh_qq_metric(data_test2,thresh = thresholds2))
 
 
-thresh_qq_metric <- function(data, thresh, k = 100, m = 500){
-
+model_thresh_select <- function(data, thresh, A, B, k = 100, m = 500){
+  
   # Check inputs are valid
   if (!is.numeric(data)) stop("Data must be a vector")
   if (!is.numeric(thresh)) stop("u to be tested needs to be a vector")
+  if (!is.numeric(A)) stop("A to be tested needs to be a vector")
+  if (!is.numeric(B)) stop("B to be tested needs to be a vector")
   if (k <= 0 | k %% 1 != 0) stop("Number of bootstrapped samples must be a positive integer")
   if (m <= 0 | m %% 1 != 0) stop("Number of equally spaced probabilities must be a positive integer")
-
-  meandistances <- xis <- sigmas <- num_excess <- numeric(length(thresh))
+  
+  #--------------------STOPPED: DIVIDE FUNCTION INTO PARTS/SMALLER FUNCTIONS
+  meandistances <- xis<- sigmas <- num_excess <- numeric(length(thresh))
   for (i in 1:length(thresh)) {
     u <- thresh[i]
     excess <- data[data > u] - u
