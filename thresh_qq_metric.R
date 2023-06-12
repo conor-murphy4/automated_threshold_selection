@@ -32,7 +32,7 @@ source('helper_functions.R')
 #' (example2 <- thresh_qq_metric(data_test2,thresh = thresholds2))
 
 
-thresh_qq_metric <- function(data, thresh, k = 100, m = 500){
+thresh_qq_metric <- function(data, thresh, k = 200, m = 500){
 
   # Check inputs are valid
   if (!is.numeric(data)) stop("Data must be a vector")
