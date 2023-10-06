@@ -2,28 +2,59 @@ library(Metrics)
 
 #Data
 
-mythrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/mythrI.rds")
-mythrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/mythrI1.rds")
-mythrI2 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/mythrI2.rds")
-mythrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/C_fixed n/mythrC.rds")
-mythrG <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/mythrG.rds")
+#Case 1
+mythrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/mythrI.rds")
+wadsthrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI.rds")
+norththrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI.rds")
 
-norththrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/norththrI.rds")
-norththrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/norththrI1.rds")
-norththrI2 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/norththrI2.rds")
-norththrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/C_fixed n/norththrC.rds")
-norththrG <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/norththrG.rds")
+#Case 2
+wadsthrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI1.rds")
+norththrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI1.rds")
+mythrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/mythrI1.rds")
 
-wadsthrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/wadsthrI.rds")
-wadsthrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/wadsthrI1.rds")
-wadsthrI2 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/wadsthrI2.rds")
-wadsthrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/C_fixed n/wadsthrC.rds")
-wadsthrG <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/wadsthrG.rds")
+#Case 3
+mythrI2 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/mythrI2.rds")
+wadsthrI2 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI2.rds")
+norththrI2 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI2.rds")
 
+#Case 4
+mythrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/mythrC.rds")
+wadsthrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrC.rds")
+norththrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrC.rds")
 
+#Gaussian case with large sample size (20000)
 mythrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/mythrG_large_sample.rds")
 norththrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/norththrG_large_sample.rds")
 wadsthrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/wadsthrG_large_sample.rds")
+
+#RMSE of threshold choice
+#Case 1
+rmse(mythrI$thr,1)
+rmse(wadsthrI$thr[!is.na(wadsthrI$thr)],1)
+rmse(norththrI$thr, 1)
+
+#Case 2
+rmse(mythrI1$thr,1)
+rmse(wadsthrI1$thr[!is.na(wadsthrI1$thr)],1)
+rmse(norththrI1$thr, 1)
+
+#Case 3
+rmse(mythrI2$thr,1)
+rmse(wadsthrI2$thr[!is.na(wadsthrI2$thr)],1)
+rmse(norththrI2$thr, 1)
+
+#Case 4
+rmse(mythrC$thr,1)
+rmse(wadsthrC$thr[!is.na(wadsthrC$thr)],1)
+rmse(norththrC$thr, 1)
+
+#Percentage fail of Wadsworth in Case 1-4
+length(wadsthrI$thr[is.na(wadsthrI$thr)])/500
+length(wadsthrI1$thr[is.na(wadsthrI1$thr)])/500
+length(wadsthrI2$thr[is.na(wadsthrI2$thr)])/500
+length(wadsthrC$thr[is.na(wadsthrC$thr)])/500
+
+
 #------------------True quantiles---------------------
 
 #Ideal case , p exceedance prob, par (sig, xi), u true
@@ -45,25 +76,26 @@ estimated_quantile <- function(df,p,n){
   return(est_quants)
 }
 
-#Ideal case
-n <- 1200
-t <- c(1,10,100)
+#---------RMSE of estimated quantiles for Case 1-4--------------------
+#Case 1-4
+#Edit sample size, estimated threshold vectors and true parameters for case 1-4
+n <- 1000
 p_seq <- c(1/n,1/(10*n), 1/(100*n))
 my_RMSE <- north_RMSE <- wads_RMSE <- numeric(3)
 for(i in 1:3){
   p <- p_seq[i]
-  est_mythrI <- estimated_quantile(df=mythrI, p=p, n=n)
-  est_northI <- estimated_quantile(df=norththrI, p=p, n=n)
-  err<-is.na(wadsthrI$thr)
-  est_wadsI <- estimated_quantile(df=wadsthrI[!err,], p=p, n=n)
-  true_I <- ideal_quant(p=p, par=c(0.5,0.1), u=1.0)
+  est_mythr <- estimated_quantile(df=mythrC, p=p, n=n)
+  est_north <- estimated_quantile(df=norththrC, p=p, n=n)
+  err<-is.na(wadsthrC$thr)
+  est_wads <- estimated_quantile(df=wadsthrC[!err,], p=p, n=n)
+  true <- cens_quant(p=p, par=c(0.5,0.1),p_1= 0.5290265, u=1.0)
   
-  my_RMSE[i] <- rmse(true_I, est_mythrI)
-  north_RMSE[i] <- rmse(true_I, est_northI)
-  wads_RMSE[i] <- rmse(true_I, est_wadsI)
+  my_RMSE[i] <- rmse(true, est_mythr)
+  north_RMSE[i] <- rmse(true, est_north)
+  wads_RMSE[i] <- rmse(true, est_wads)
 }
 
-RMSE_I <- data.frame(p=p_seq, my=my_RMSE, wads=wads_RMSE, north=north_RMSE,  t=t)
+(RMSE <- data.frame(p=p_seq, my=my_RMSE, wads=wads_RMSE, north=north_RMSE,  t=t))
 
 n <- 1200
 t <- c(1,10,100)
@@ -137,7 +169,7 @@ p_seq <- c(1/n,1/(10*n), 1/(100*n))
 my_RMSE <- numeric(3)
 for(i in 1:3){
   p <- p_seq[i]
-  est_mythrG <- estimated_quantile(df=norththrG_large_sample, p=p, n=n)
+  est_mythrG <- estimated_quantile(df=norththrG_large_sample_1percentgrid, p=p, n=n)
   true_G <- qnorm(1-p)
 
   my_RMSE[i] <- rmse(true_G, est_mythrG) 
