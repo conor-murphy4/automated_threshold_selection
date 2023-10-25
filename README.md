@@ -6,7 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-# Threshold selection for univariate extremes
+# Automated threshold selection and associated
+
+inference uncertainty for univariate extremes
 
 R code used in threshold selection paper.
 
@@ -19,9 +21,16 @@ distribution (GPD).
 `helper_functions.R` contains functions for the GPD which feed into
 `thresh_qq_metric.R`.
 
-`Other files` contains all files for plotting and results in the
-threshold selection paper. The paper and these files are still in
-development.
+`background` contains the R code file to reproduce the parameter
+stability plots shown in Section 2 of the main text.
+
+`simulation_study` contains the R code files to reproduce the simulation
+study results provided in Section 6 of the main text and Section S:4 of
+the supplementary material. These files are still in development.
+
+`application_to_river_flows` contains the R code file to reproduce the
+analysis of the River Nidd dataset provided in Section 7 of the main
+text.
 
 ## Motivation
 
