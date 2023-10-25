@@ -87,6 +87,7 @@ boot_return_ests_thr_uncertainty <- matrix(NA, nrow = m*m, ncol=length(t))
 boot_thr <- numeric(m)
 
 #Obtaining bootstrap estimates of return levels incorporating uncertainty in parameter estimates and threshold
+#NOTE: This section of code will take some time to run!
 set.seed(12345)
 for(i in 1:m){
   data_boot <- sample(data,n, replace=TRUE) #non-parametric bootstrap to incorporate threshold (and rate of exceedance) uncertainty
