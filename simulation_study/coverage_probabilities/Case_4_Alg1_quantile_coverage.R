@@ -31,12 +31,13 @@ cens_quant <- function(p, par, p_1, u){
 
 true_quantiles <- cens_quant(p=return_level_probs, par=c(0.5,0.1), p_1= 0.5290265, u=1.0)
 
+return_level_boot_estimates <- return_level_boot_ests_Alg2
 covered <- matrix(0,nrow=num_samples, ncol = length(return_level_probs))
 for (ii in 1:num_samples) {
   my_return_level_ests <- return_level_boot_estimates[[ii]]
   return_level_boot_ests_sorted <- apply(my_return_level_ests, 2, sort)
-  lower_limits <- return_level_boot_ests_sorted[0.025*num_boot,]
-  upper_limits <- return_level_boot_ests_sorted[0.975*num_boot,]
+  lower_limits <- return_level_boot_ests_sorted[0.1*(num_boot)^2,]
+  upper_limits <- return_level_boot_ests_sorted[0.9*(num_boot)^2,]
   covered[ii,(lower_limits <= true_quantiles & upper_limits >= true_quantiles)] <- 1
 }
 
