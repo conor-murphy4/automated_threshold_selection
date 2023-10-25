@@ -1,0 +1,104 @@
+library(evir)
+source("helper_functions.R")
+
+#Code from evir::shape function adjusted to include bootstrapped confidence intervals in parameter stability plot
+
+shapestabboot <- function (data, thresholds,Q, reverse = TRUE, ci = 0.95, auto.scale = TRUE, labels = TRUE, boot=FALSE, m.boot=200){
+  data <- as.numeric(data)
+  n <- length(data)
+  qq <- 0
+  if (ci) 
+    qq <- qnorm(1 - (1 - ci)/2)
+  x <- thresholds 
+  gpd.dummy <- function(thr, data) {
+    out <- gpd(data = data, threshold = thr, information = "expected")
+    c(out$n.exceed, out$par.ests[1],out$par.ests[2], out$par.ses[1])
+  }
+  mat <- apply(as.matrix(x), 1, gpd.dummy, data = data)
+  mat <- rbind(mat, x)
+  dimnames(mat) <- list(c("exceedances", "shape","scale", "se", "thresholds"), NULL)
+  thresh <- mat[5, ]
+  exceed <- mat[1, ]
+  y <- mat[2, ]
+  sc <- mat[3, ]
+  yrange <- range(y)
+  if (ci) {
+    u <- y + mat[4, ] * qq
+    l <- y - mat[4, ] * qq
+    yrange <- range(y, u, l)
+  }
+  if(boot){
+    u_boot <- l_boot <- numeric(length(thresh))
+    for(i in 1:length(thresh)){
+      n_boot <- length(data[data>thresh[i]])
+      shapes <- numeric(m.boot)
+      for(j in 1:m.boot){
+        ex <- rgpd(n_boot, shape=y[i], scale=sc[i], mu=0)
+        bootfit <- optim(GPD_LL, z=ex, par=c(mean(ex), 0.1), control=list(fnscale=-1))
+        shapes[j] <- bootfit$par[2]
+      }
+      u_boot[i] <- quantile(shapes, 0.975)
+      l_boot[i] <- quantile(shapes, 0.025)
+    }
+    yrange <- range(y, u, l, u_boot, l_boot)
+  }
+  index <- x
+  if (reverse) 
+    index <- -x
+  if (auto.scale) 
+    plot(index, y, ylim = yrange, type = "l", xlab = "", 
+         ylab = "", axes = FALSE)
+  else plot(index, y, type = "l", xlab = "", ylab = "",axes = FALSE)
+  axis(1, at = index[seq(1,length(index), by=2)], labels = paste(round(thresholds[seq(1,length(index), by=2)],1)), tick = T)
+  axis(2)
+  axis(3, at = index[seq(1,length(index), by=2)], labels = paste(Q[seq(1,length(index), by=2)]), tick = T)
+  box()
+  if (ci) {
+    lines(index, u, lty = 2, col = 2)
+    lines(index, l, lty = 2, col = 2)
+  }
+  if(boot){ #added by CM to add bootsrapped intervals to plot
+    lines(index, u_boot, lty = 3, col = "blue")
+    lines(index, l_boot, lty = 3, col = "blue")
+  }
+  if (labels) {
+    labely <- expression(hat(xi))
+    title(xlab = "Threshold", ylab = labely, cex.lab=1.1)
+    mtext("Quantile", side = 3, line = 3, cex=1.1)
+  }
+  invisible(mat)
+}
+
+# Results for Figure 1 ----------------------------------------------------
+
+#Plotting window
+dev.new(width=9.17, height=3.7,noRStudioGD = TRUE)
+par(mfrow=c(1,2),bg='transparent')
+
+#Generating Case 4 data with sample size of 200 
+set.seed(12345)
+data_all <- rgpd(4000, shape=0.1, scale=0.5, mu=0)
+cens_thr<-1.0*rbeta(length(data_all),1,0.5)
+keep <- data_all>cens_thr
+data_keep <- data_all[keep]
+data <- sample(data_keep, 200, replace = FALSE)
+
+#Candidate threshold grid
+Q <-  seq(0,0.95,by=0.05)
+thresh <- quantile(data, Q, names=FALSE)
+
+#Parameter stability plot
+shapestabboot(data, thresholds = thresh, Q=Q, reverse=F, boot=TRUE,m.boot=200)
+abline(v=1.0, col="green")
+
+
+####---------Nidd river data----------------------------
+data(nidd.thresh)
+
+#Candidate threshold grid
+Q <- seq(0,0.95,by=0.05)
+thresholds <- quantile(nidd.thresh,Q, names=F)
+
+#Parameter stability plot
+shapestabboot(nidd.thresh, thresholds = thresholds, Q=Q, reverse=F, boot=TRUE,m.boot=200)
+

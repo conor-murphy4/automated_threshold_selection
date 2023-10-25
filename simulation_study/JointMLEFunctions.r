@@ -65,10 +65,10 @@ NHPP.diag<-function(x, u= NULL, k, q1, q2=1, par=NULL, M=NULL, nbs=1000, alpha=0
   J1<-Joint.MLE.NHPP(x=x, u=u, k=k, q1=q1, q2=q2, par=par,M=M)
   warn<-any(eigen(J1$Cov.xi)$val<=.Machine$double.eps)
   if(!unull&&warn){
-    ustar<-NA #added
-  return(list(thresh=ustar)) #added
+    ustar<-NA #added by CM to count samples where method fails 
+  return(list(thresh=ustar)) #added by CM
   }
-  #stop("Estimated covariance matrix for xi not positive definite: try different thresholds")}
+  #stop("Estimated covariance matrix for xi not positive definite: try different thresholds")} #commented by CM
   
   while(any(eigen(J1$Cov.xi)$val<=.Machine$double.eps))
   {
@@ -97,7 +97,7 @@ NHPP.diag<-function(x, u= NULL, k, q1, q2=1, par=NULL, M=NULL, nbs=1000, alpha=0
 
   if(unull){qs<- seq(q1, q2, len=k+1)[-(k+1)]}
   
-  if(plot.out==TRUE){ #added
+  if(plot.out==TRUE){ #added by CM so plots are not outputted during simulation study
     if(is.element("LRT",plots)){
       if(UseQuantiles && unull)
       {plot(qs, c(rep(NA,2),nl[,2]),xlab="Quantile",ylab="LR statistic", main=paste("p-value:", pval),...)}
