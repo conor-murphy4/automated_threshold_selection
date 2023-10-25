@@ -7,9 +7,13 @@ mythrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/
 wadsthrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI.rds")
 norththrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI.rds")
 
-mythrI_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/mythrI_large.rds")
-wadsthrI_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI_large.rds")
-norththrI_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI_large.rds")
+mythrI_large <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/mythrI_large.rds")
+wadsthrI_large <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/wadsthrI_large.rds")
+norththrI_large <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/norththrI_large.rds")
+
+wadsthrI_large_halfpercent <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/wadsthrI_large_halfpercent.rds")
+norththrI_large_halfpercent <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/norththrI_large_halfpercent.rds")
+mythrI_large_halfpercent <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/mythrI_large_halfpercent.rds")
 
 #Case 2
 wadsthrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI1.rds")
@@ -161,20 +165,20 @@ estimated_quantile <- function(df,p,n){
 #---------RMSE of estimated quantiles for Case 1-4--------------------
 #Case 1-4
 #Edit sample size, estimated threshold vectors and true parameters for case 1-4
-n <- 1200
+n <- 20000
 p_seq <- c(1/n,1/(10*n), 1/(100*n))
 my_RMSE <- north_RMSE <- wads_RMSE <- numeric(3)
 for(i in 1:3){
   p <- p_seq[i]
-  est_mythr <- estimated_quantile(df=mythrI,p=p, n=n)
-  est_north <- estimated_quantile(df=norththrI, p=p, n=n)
-  err<-is.na(wadsthrI$thr)
-  est_wads <- estimated_quantile(df=wadsthrI[!err,], p=p, n=n)
+  est_mythr <- estimated_quantile(df=mythrI_large_halfpercent,p=p, n=n)
+  est_north <- estimated_quantile(df=norththrI_large_halfpercent, p=p, n=n)
+  err<-is.na(wadsthrI_large_halfpercent$thr)
+  est_wads <- estimated_quantile(df=wadsthrI_large_halfpercent[!err,], p=p, n=n)
   true <- ideal_quant(p, par=c(0.5,0.1), u=1.0)
   
-  my_RMSE[i] <- bias(est_mythr, true)
-  north_RMSE[i] <- bias(est_north, true)
-  wads_RMSE[i] <- bias(est_wads, true)
+  my_RMSE[i] <- rmse(est_mythr, true)
+  north_RMSE[i] <- rmse(est_north, true)
+  wads_RMSE[i] <- rmse(est_wads, true)
 }
 
 (RMSE <- data.frame(p=p_seq, my=my_RMSE, wads=wads_RMSE, north=north_RMSE))#,  t=t))
