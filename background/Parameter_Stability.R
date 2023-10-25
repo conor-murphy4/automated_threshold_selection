@@ -3,6 +3,20 @@ source("helper_functions.R")
 
 #Code from evir::shape function adjusted to include bootstrapped confidence intervals in parameter stability plot
 
+#Function to produce plot showing how the estimate of the shape parameter varies with threshold/quantile
+
+#Arguments:
+
+# data - numeric vector of data
+# thresholds - numeric vector of thresholds
+# Q - numeric vector of quantiles corresponding to thresholds
+# reverse - should plot be by increasing threshold (TRUE) or number of extremes (FALSE)
+# ci - probability for asymptotic confidence band; for no confidence band set to zero
+# auto.scale - whether or not plot should be automatically scaled; if not, xlim and ylim graphical parameters may be entered
+# labels - whether or not axes should be labelled
+# boot - whether or not bootstrapped confidence intervals should be included
+# m.boot - number of bootstraps
+
 shapestabboot <- function (data, thresholds,Q, reverse = TRUE, ci = 0.95, auto.scale = TRUE, labels = TRUE, boot=FALSE, m.boot=200){
   data <- as.numeric(data)
   n <- length(data)
