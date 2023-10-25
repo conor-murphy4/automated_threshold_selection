@@ -7,6 +7,10 @@ mythrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/
 wadsthrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI.rds")
 norththrI <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI.rds")
 
+mythrI_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/mythrI_large.rds")
+wadsthrI_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI_large.rds")
+norththrI_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI_large.rds")
+
 #Case 2
 wadsthrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrI1.rds")
 norththrI1 <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrI1.rds")
@@ -22,16 +26,26 @@ mythrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/
 wadsthrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/wadsthrC.rds")
 norththrC <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimIC/Seeded_final/Rerun with quantiles/norththrC.rds")
 
-#Gaussian case with large sample size (20000)
-mythrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/mythrG_large_sample.rds")
-norththrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/norththrG_large_sample.rds")
-wadsthrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/wadsthrG_large_sample.rds")
+#Gaussian case 
+mythrG <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Original/mythrG.rds")
+wadsthrG <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Original/wadsthrG.rds")
+norththrG <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Original/norththrG.rds")
+
+#with large sample size (20000)
+mythrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/mythrG_large_sample_halfpercentgrid.rds")
+norththrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/norththrG_large_sample_halfpercentgrid.rds")
+wadsthrG_large_sample <- readRDS("C:/Users/murphyc4/OneDrive - Lancaster University/STOR-i/PhD/Projects/Constant Threshold Selection/SimGauss/Seeded_final/Larger sample size/wadsthrG_large_sample_halfpercentgrid.rds")
 
 #RMSE of threshold choice
 #Case 1
 rmse(mythrI$thr,1)
 rmse(wadsthrI$thr[!is.na(wadsthrI$thr)],1)
 rmse(norththrI$thr, 1)
+
+#Case 1 large sample
+rmse(mythrI_large_sample$thr,1)
+rmse(wadsthrI_large_sample$thr[!is.na(wadsthrI_large_sample$thr)],1)
+rmse(norththrI_large_sample$thr, 1)
 
 #Case 2
 rmse(mythrI1$thr,1)
@@ -54,6 +68,74 @@ length(wadsthrI1$thr[is.na(wadsthrI1$thr)])/500
 length(wadsthrI2$thr[is.na(wadsthrI2$thr)])/500
 length(wadsthrC$thr[is.na(wadsthrC$thr)])/500
 
+length(wadsthrI_large_sample$thr[is.na(wadsthrI_large_sample$thr)])/500
+
+#RMSE on samples where Wadsworth was successful only
+err <- is.na(wadsthrC$thr)
+rmse(mythrC$thr[!err],1)
+rmse(wadsthrC$thr[!err],1)
+rmse(norththrC$thr[!err], 1)
+
+#Bias of threshold choice
+#Case 1
+bias(mythrI$thr,1)
+bias(wadsthrI$thr[!is.na(wadsthrI$thr)],1)
+bias(norththrI$thr, 1)
+
+#Case 2
+bias(mythrI1$thr,1)
+bias(wadsthrI1$thr[!is.na(wadsthrI1$thr)],1)
+bias(norththrI1$thr, 1)
+
+#Case 3
+bias(mythrI2$thr,1)
+bias(wadsthrI2$thr[!is.na(wadsthrI2$thr)],1)
+bias(norththrI2$thr, 1)
+
+#Case 4
+bias(mythrC$thr,1)
+bias(wadsthrC$thr[!is.na(wadsthrC$thr)],1)
+bias(norththrC$thr, 1)
+
+#Case 1
+variance(mythrI$thr )
+variance(wadsthrI$thr[!is.na(wadsthrI$thr)] )
+variance(norththrI$thr )
+
+#Case 2
+variance(mythrI1$thr )
+variance(wadsthrI1$thr[!is.na(wadsthrI1$thr)] )
+variance(norththrI1$thr )
+
+#Case 3
+variance(mythrI2$thr )
+variance(wadsthrI2$thr[!is.na(wadsthrI2$thr)] )
+variance(norththrI2$thr )
+
+#Case 4
+variance(mythrC$thr )
+variance(wadsthrC$thr[!is.na(wadsthrC$thr)] )
+variance(norththrC$thr )
+
+#Variance of threshold choice
+variance <- function(x){
+  n <- length(x)
+  x_bar <- sum(x)/n
+  diff <- x - x_bar
+  sdiff <- diff^2
+  vary<- sum(sdiff)/n
+  return(vary)
+}
+
+#Danielsson methods
+
+rmse(dan2001thrC$thr, 1)
+bias(dan2001thrC$thr, 1)
+variance(dan2001thrC$thr)
+
+rmse(dan2019thrC$thr, 1)
+bias(dan2019thrC$thr, 1)
+variance(dan2019thrC$thr)
 
 #------------------True quantiles---------------------
 
@@ -79,72 +161,39 @@ estimated_quantile <- function(df,p,n){
 #---------RMSE of estimated quantiles for Case 1-4--------------------
 #Case 1-4
 #Edit sample size, estimated threshold vectors and true parameters for case 1-4
-n <- 1000
+n <- 1200
 p_seq <- c(1/n,1/(10*n), 1/(100*n))
 my_RMSE <- north_RMSE <- wads_RMSE <- numeric(3)
 for(i in 1:3){
   p <- p_seq[i]
-  est_mythr <- estimated_quantile(df=mythrC, p=p, n=n)
-  est_north <- estimated_quantile(df=norththrC, p=p, n=n)
-  err<-is.na(wadsthrC$thr)
-  est_wads <- estimated_quantile(df=wadsthrC[!err,], p=p, n=n)
-  true <- cens_quant(p=p, par=c(0.5,0.1),p_1= 0.5290265, u=1.0)
+  est_mythr <- estimated_quantile(df=mythrI,p=p, n=n)
+  est_north <- estimated_quantile(df=norththrI, p=p, n=n)
+  err<-is.na(wadsthrI$thr)
+  est_wads <- estimated_quantile(df=wadsthrI[!err,], p=p, n=n)
+  true <- ideal_quant(p, par=c(0.5,0.1), u=1.0)
   
-  my_RMSE[i] <- rmse(true, est_mythr)
-  north_RMSE[i] <- rmse(true, est_north)
-  wads_RMSE[i] <- rmse(true, est_wads)
+  my_RMSE[i] <- bias(est_mythr, true)
+  north_RMSE[i] <- bias(est_north, true)
+  wads_RMSE[i] <- bias(est_wads, true)
 }
 
-(RMSE <- data.frame(p=p_seq, my=my_RMSE, wads=wads_RMSE, north=north_RMSE,  t=t))
+(RMSE <- data.frame(p=p_seq, my=my_RMSE, wads=wads_RMSE, north=north_RMSE))#,  t=t))
 
-n <- 1200
-t <- c(1,10,100)
+#Danielsson methods Case 1-4
+n <- 1000
 p_seq <- c(1/n,1/(10*n), 1/(100*n))
 dan01_RMSE <- dan19_RMSE <- numeric(3)
 for(i in 1:3){
   p <- p_seq[i]
-  est_mythrI <- estimated_quantile(df=dan2001I, p=p, n=n)
-  est_northI <- estimated_quantile(df=danthrI, p=p, n=n)
-  true_I <- ideal_quant(p=p, par=c(0.5,0.1), u=1.0)
+  est_mythrI <- estimated_quantile(df=dan2001thrI, p=p, n=n)
+  est_northI <- estimated_quantile(df=dan2019thrI, p=p, n=n)
+  true_I <- cens_quant(p=p, par=c(0.5,0.1),  p_1= 0.5290265, u=1.0 )
   
-  dan01_RMSE[i] <- rmse(true_I, est_mythrI)
-  dan19_RMSE[i] <- rmse(true_I, est_northI)
+  dan01_RMSE[i] <- rmse(est_mythrI,true_I)
+  dan19_RMSE[i] <- rmse(est_northI,true_I)
 }
 
-RMSE_I <- data.frame(p=p_seq, dan01=dan01_RMSE, dan19=dan19_RMSE,  t=t)
-
-#I1 (I with small sample size)
-n <- 480
-p_seq <- c(1/n,1/(10*n), 1/(100*n))
-my_RMSE <- north_RMSE <- numeric(3)
-for(i in 1:3){
-  p <- p_seq[i]
-  est_dan2001I1 <- estimated_quantile(df=dan2001I1, p=p, n=n)
-  est_northI1 <- estimated_quantile(df=danthrI1, p=p, n=n)
-  true_I1 <- ideal_quant(p=p, par=c(0.5,0.1), u=1.0)
-
-  my_RMSE[i] <- rmse(true_I1, est_dan2001I1)
-  north_RMSE[i] <- rmse(true_I1, est_northI1)
-}
-
-RMSE_I1 <- data.frame(p=p_seq, dan01=my_RMSE, dan19=north_RMSE, t=t)
-
-
-#I2 (I with, n=2400 shape=-0.05)
-n <- 2400
-p_seq <- c(1/n,1/(10*n), 1/(100*n))
-my_RMSE <- north_RMSE <- numeric(3)
-for(i in 1:3){
-  p <- p_seq[i]
-  est_dan2001I2 <- estimated_quantile(df=dan2001I2, p=p, n=n)
-  est_northI2 <- estimated_quantile(df=danthrI2, p=p, n=n)
-  true_I2 <- ideal_quant(p=p, par=c(0.5,-0.05), u=1.0)
-  
-  my_RMSE[i] <- rmse(true_I2, est_dan2001I2)
-  north_RMSE[i] <- rmse(true_I2, est_northI2)
-}
-
-RMSE_I2 <- data.frame(p=p_seq, dan01=my_RMSE,  dan19=north_RMSE, t=t)
+(RMSE_I <- data.frame(p=p_seq, dan01=dan01_RMSE, dan19=dan19_RMSE))
 
 #C 
 n <- 1000
@@ -156,84 +205,22 @@ for(i in 1:3){
   est_northC <- estimated_quantile(df=danthrC, p=p, n=n)
   true_C <- cens_quant(p=p, par=c(0.5,0.1), p_1= 0.5290265, u=1.0)
 
-  my_RMSE[i] <- rmse(true_C, est_dan2001C)
-  north_RMSE[i] <- rmse(true_C, est_northC)
+  my_RMSE[i] <- rmse(est_dan2001C , true_C)
+  north_RMSE[i] <- rmse(est_northC, true_C)
 }
 
 RMSE_C <- data.frame(p=p_seq, dan01=my_RMSE, dan19=north_RMSE,  t=t)
 
-
-#G
-n <- 20000
+#Gaussian samples
+n <- 2000
 p_seq <- c(1/n,1/(10*n), 1/(100*n))
 my_RMSE <- numeric(3)
 for(i in 1:3){
   p <- p_seq[i]
-  est_mythrG <- estimated_quantile(df=norththrG_large_sample_1percentgrid, p=p, n=n)
+  est_mythrG <- estimated_quantile(df=dan2019thrG, p=p, n=n)
   true_G <- qnorm(1-p)
 
-  my_RMSE[i] <- rmse(true_G, est_mythrG) 
+  my_RMSE[i] <- variance(est_mythrG)#, true_G) 
 }
 my_RMSE
 
-#Bias and variance breakdown
-variance <- function(x){
-  n <- length(x)
-  x_bar <- sum(x)/n
-  diff <- x - x_bar
-  sdiff <- diff^2
-  vary<- sum(sdiff)/n
-  return(vary)
-}
-
-p <- 1/(100*n)
-est_G1 <- estimated_quantile(df=mythrG, p=p, n=n)
-err<-is.na(wadsthrG$thr)
-est_G2 <- estimated_quantile(df=wadsthrG[!err,], p=p, n=n)
-est_G3 <- estimated_quantile(df=norththrG, p=p, n=n)
-est_G4 <- estimated_quantile(df=dan2001G, p=p, n=n)
-est_G5 <- estimated_quantile(df=danthrG, p=p, n=n)
-true <- qnorm(1-p)
-
-bias(true,est_G1)
-bias(true, est_G2)
-bias(true, est_G3)
-bias(true, est_G4)
-bias(true, est_G5)
-
-variance(est_G1)
-variance(est_G2)
-variance(est_G3)
-variance(est_G4)
-variance(est_G5)
-
-RMSE_G <- data.frame(p=p_seq, my=my_RMSE, wads=wads_RMSE, north=north_RMSE,  t=t)
-RMSE_C
-
-err<-is.na(wadsthrG$thr)
-length(wadsthrG$thr[err])
-
-#Endpoint estimation
-estimated_end <- function(df){
-  end <- df$thr - df$scale/df$shape
-  return(end)
-}
-
-end_mythr <- estimated_end(mythr3A)
-end_north <- estimated_end(norththr3A)
-end_mythr
-end_north
-length(norththr3A$thr[norththr3A$shape>0])
-
-
-dev.new(width=9.17, height=5.53,noRStudioGD = TRUE)
-par(mfrow=c(1,1),bg='transparent')
-plot(density(end_mythr),  lwd=2, col="green", lty=2, main="Case 3A", ylab="Density", xlab="Thresholds")
-lines(density(end_north), lwd=2, col="blue", lty=3)
-legend("topright", c("Our method", "Northrop"), col=c("green", "blue"), lty=c(2,3),lwd=2, cex=0.8)
-abline(v=3.5, col="red", lwd=1.5)
-plot(density(mythr3B$thr),  lwd=2, col="green", lty=2, xlim=c(0.5,2.5), main="Case 3B", ylab="Density", xlab="Thresholds")
-lines(density(norththr3B$thr), lwd=2, col="blue", lty=3)
-legend("topright", c("Our method", "Northrop"), col=c("green", "blue"), lty=c(2,3),lwd=2, cex=0.8)
-
-RMSE_I
