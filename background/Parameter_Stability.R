@@ -83,7 +83,7 @@ shapestabboot <- function (data, thresholds,Q, reverse = TRUE, ci = 0.95, auto.s
   invisible(mat)
 }
 
-# Results for Figure 1 ----------------------------------------------------
+# Results for Figure 1 in main text----------------------------------------------------
 
 #Plotting window
 dev.new(width=9.17, height=3.7,noRStudioGD = TRUE)
