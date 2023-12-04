@@ -1,16 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# threshold_selection_paper
+# automated_threshold_selection
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-# Automated threshold selection and associated
-
-inference uncertainty for univariate extremes
-
-R code used in threshold selection paper.
+R code used in the preprint “Automated threshold selection and
+associated inference uncertainty for univariate extremes” which can be
+viewed [here](https://arxiv.org/abs/2310.17999).
 
 ## Repository Overview
 
