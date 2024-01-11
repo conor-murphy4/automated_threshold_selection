@@ -18,7 +18,27 @@ density_discontinuous <- function(x, uniform_lower, uniform_upper, proportion_un
   return(density)
 }
 
-density_continuous <- function(x){
+density_continuous <- function(x, alpha = 1, beta = 0.5){
+  gpd_scale = 0.5
+  gpd_shape = 0.1
+  
+  prop_to_density <- function(x, a = alpha, b = beta){
+    dgpd(x, shape = 0.1, scale = 0.5) * pbeta(x, a, b)
+  } 
+
+  # Area correction to get valid pdf
+    AUC_0_to_1 <- integrate(prop_to_density, 0, 1)$value
+    AUC_1_to_inf <- 1 - pgpd(q = 1,shape = gpd_shape, scale = gpd_scale)
+    total_AUC <- AUC_0_to_1 + AUC_1_to_inf
+
+  ## Correct density values to ensure unit integrabile
+    area_correction_factor <- 1 / total_AUC
+    density <- prop_to_density(x) * area_correction_factor
+  
+  return(density)
+}
+
+density_continuous_2 <- function(x, alpha = 1, beta = 0.5){
 
   is_undefined <- which(x < 0)
   is_bgpd <- which((x > 0) & (x < 1))
@@ -26,32 +46,34 @@ density_continuous <- function(x){
 
   density <- rep(NA_real_, length(x))
   density[is_undefined] <- 0
-  density[is_gpd] <- dgpd(x[is_gpd], shape = 0.1, scale = 0.5, mu = 0)
   density[is_bgpd] <- dgpd(x[is_bgpd], shape = 0.1, scale = 0.5) *
-                      pbeta(x[is_bgpd], shape1 = 1, shape2 = 1/0.5)
+    pbeta(x[is_bgpd], shape1 = alpha, shape2 = beta)
 
-  # Area correction to get valid pdf
   ## Calculate area under the curve between 0 and 1
-    n_eval_points = 10001
-    eval_points <- ppoints(n_eval_points)
-    eval_values <- dgpd(eval_points, shape = 0.1, scale = 0.5) *
-      pbeta(eval_points, shape1 = 1, shape2 = 1/0.5)
-    AUC_0_to_1 <- mean(eval_values)
+  n_eval_points = 10001
+  eval_points <- ppoints(n_eval_points)
+  eval_values <- dgpd(eval_points, shape = 0.1, scale = 0.5) *
+    pbeta(eval_points, shape1 = alpha, shape2 = beta)
 
-  ## Calculate total AUC
-    AUC_1_to_inf <- 1 - pgpd(q = 1,shape = 0.1, scale = 0.5)
-    total_AUC <- AUC_0_to_1 + AUC_1_to_inf
+  q <- mean(c(eval_values[-1], eval_values[-n_eval_points]))  # AUC from 0 to 1
 
-  ## Correct density values to ensure unit integrabile
-    area_correction_factor <- 1 / total_AUC
-    density <- density * area_correction_factor
+  # scale conditional distribution
+  density[is_gpd] <- (1 - q) * dgpd(x[is_gpd] - 1, shape = 0.1, scale = 0.6, mu = 0)
 
   return(density)
 }
 
+# sanity check against sample proportions
+integrate(density_continuous, lower = 0, upper = 1)
+integrate(density_continuous, lower = 0, upper = 100)
+
+integrate(density_continuous_2, lower = 0, upper = 1)
+integrate(density_continuous_2, lower = 0, upper = 100)
+
 #############################################
 # Evaluate probability density functions ----
 #############################################
+
 t <- seq(0, 4, length.out = 5001)
 
 case_1_density <- density_discontinuous(
@@ -67,13 +89,14 @@ case_3_density <- density_discontinuous(
   x = t,
   uniform_lower = 0.5,
   uniform_upper = 1.0,
-  proportion_uniform = 1/5,
+  proportion_uniform = 1/6,
   gpd_scale = 0.5,
   gpd_shape = -0.05
 )
 
-case_4_density <- density_continuous(t)
-
+case_4_density_1 <- density_continuous(t)
+case_4_density_1a <- density_continuous(t, beta = 2)
+case_4_density_2 <- density_continuous_2(t)
 ###################
 # Create Plots ----
 ###################
@@ -90,7 +113,9 @@ plot(
   xlab = "x",
   ylab = "probability density",
   bty = "n",
-  ylim = c(0,2))
+  ylim = c(0,2),
+  #main = "Cases 1 and 2",
+  )
 abline(v = 1, lty = 2, lwd = 2)
 
 plot(
@@ -103,12 +128,14 @@ plot(
   xlab = "x",
   ylab = "probability density",
   bty = "n",
-  ylim = c(0,2))
+  ylim = c(0,2),
+  #main = "Case 3",
+  )
 abline(v = 1, lty = 2, lwd = 2)
 
 plot(
   x = t,
-  y = case_4_density,
+  y = case_4_density_1,
   type = "l",
   lwd = 2,
   cex.axis = 1.75,
@@ -116,6 +143,38 @@ plot(
   xlab = "x",
   ylab = "probability density",
   bty = "n",
-  ylim = c(0,2))
+  ylim = c(0,2),
+  #main = "Case 4 - ZV method beta = 0.5",
+  )
+abline(v = 1, lty = 2, lwd = 2)
+
+plot(
+  x = t,
+  y = case_4_density_2,
+  type = "l",
+  lwd = 2,
+  cex.axis = 1.75,
+  cex.lab = 1.75,
+  xlab = "x",
+  ylab = "probability density",
+  bty = "n",
+  ylim = c(0,2),
+  #main = "Case 4 - JT method beta = 0.5",
+  )
+abline(v = 1, lty = 2, lwd = 2)
+
+plot(
+  x = t,
+  y = case_4_density_1a,
+  type = "l",
+  lwd = 2,
+  cex.axis = 1.75,
+  cex.lab = 1.75,
+  xlab = "x",
+  ylab = "probability density",
+  bty = "n",
+  ylim = c(0,2),
+  #main = "Case 4 - ZV method beta = 2",
+  )
 abline(v = 1, lty = 2, lwd = 2)
 dev.off()
