@@ -22,16 +22,17 @@ density_continuous <- function(x, alpha = 1, beta = 0.5){
   gpd_scale = 0.5
   gpd_shape = 0.1
   
+  # probability density up to proportionality (integral less than 1)
   prop_to_density <- function(x, a = alpha, b = beta){
     dgpd(x, shape = 0.1, scale = 0.5) * pbeta(x, a, b)
   } 
 
-  # Area correction to get valid pdf
+  # Area correction to get valid pdf 
     AUC_0_to_1 <- integrate(prop_to_density, 0, 1)$value
     AUC_1_to_inf <- 1 - pgpd(q = 1,shape = gpd_shape, scale = gpd_scale)
     total_AUC <- AUC_0_to_1 + AUC_1_to_inf
 
-  ## Correct density values to ensure unit integrabile
+  ## Correct density values to ensure unit integrable
     area_correction_factor <- 1 / total_AUC
     density <- prop_to_density(x) * area_correction_factor
   
@@ -39,29 +40,28 @@ density_continuous <- function(x, alpha = 1, beta = 0.5){
 }
 
 density_continuous_2 <- function(x, alpha = 1, beta = 0.5){
-
+  gpd_scale = 0.5
+  gpd_shape = 0.1
+  
   is_undefined <- which(x < 0)
   is_bgpd <- which((x > 0) & (x < 1))
   is_gpd <- which(x > 1)
 
-  density <- rep(NA_real_, length(x))
-  density[is_undefined] <- 0
-  density[is_bgpd] <- dgpd(x[is_bgpd], shape = 0.1, scale = 0.5) *
-    pbeta(x[is_bgpd], shape1 = alpha, shape2 = beta)
+  # probability density up to proportionality (integral less than 1)
+  prop_to_density <- function(x, a = alpha, b = beta){
+    dgpd(x, shape = gpd_shape, scale = gpd_scale) * pbeta(x, a, b)
+  } 
+  
+  # Calculate area under the curve between 0 and 1
+  q <- integrate(f = prop_to_density, lower = 0, upper = 1)$value
 
-  ## Calculate area under the curve between 0 and 1
-  n_eval_points = 10001
-  eval_points <- ppoints(n_eval_points)
-  eval_values <- dgpd(eval_points, shape = 0.1, scale = 0.5) *
-    pbeta(eval_points, shape1 = alpha, shape2 = beta)
-
-  q <- mean(c(eval_values[-1], eval_values[-n_eval_points]))  # AUC from 0 to 1
-
-  # scale conditional distribution
+  # scale conditional distribution  
+  density <- prop_to_density(x)
   density[is_gpd] <- (1 - q) * dgpd(x[is_gpd] - 1, shape = 0.1, scale = 0.6, mu = 0)
 
   return(density)
 }
+
 
 # sanity check against sample proportions
 integrate(density_continuous, lower = 0, upper = 1)
