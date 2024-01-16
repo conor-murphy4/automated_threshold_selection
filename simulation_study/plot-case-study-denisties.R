@@ -27,7 +27,7 @@ density_continuous <- function(x, alpha = 1, beta = 0.5){
     dgpd(x, shape = 0.1, scale = 0.5) * pbeta(x, a, b)
   } 
 
-  # Area correction to get valid pdf 
+  # Calculate area under prop_to_density() 
     AUC_0_to_1 <- integrate(prop_to_density, 0, 1)$value
     AUC_1_to_inf <- 1 - pgpd(q = 1,shape = gpd_shape, scale = gpd_scale)
     total_AUC <- AUC_0_to_1 + AUC_1_to_inf
@@ -63,13 +63,6 @@ density_continuous_2 <- function(x, alpha = 1, beta = 0.5){
 }
 
 
-# sanity check against sample proportions
-integrate(density_continuous, lower = 0, upper = 1)
-integrate(density_continuous, lower = 0, upper = 100)
-
-integrate(density_continuous_2, lower = 0, upper = 1)
-integrate(density_continuous_2, lower = 0, upper = 100)
-
 #############################################
 # Evaluate probability density functions ----
 #############################################
@@ -97,6 +90,7 @@ case_3_density <- density_discontinuous(
 case_4_density_1 <- density_continuous(t)
 case_4_density_1a <- density_continuous(t, beta = 2)
 case_4_density_2 <- density_continuous_2(t)
+
 ###################
 # Create Plots ----
 ###################
@@ -177,4 +171,57 @@ plot(
   #main = "Case 4 - ZV method beta = 2",
   )
 abline(v = 1, lty = 2, lwd = 2)
+dev.off()
+
+
+## Tests ----------------------------------------------------------------
+
+# Sanity check against sample proportion below threshold
+
+integrate(density_continuous, lower = 0, upper = 1) # matches sample
+integrate(density_continuous, lower = 0, upper = 100)
+
+integrate(density_continuous_2, lower = 0, upper = 1) # does not match sample
+integrate(density_continuous_2, lower = 0, upper = 100)
+
+# Extend over all quantiles
+
+## Simulate large set of Xs
+set.seed(4321)
+n_sim <- 1e6
+Y <- threshold:::rgpd(n = n_sim, shape = 0.1, scale = 0.5)
+B <- rbeta(n = n_sim, shape1 = 1, shape2 = 0.5)
+X <- Y[Y>B]
+
+## Define model and sample cdfs (slow but correct)
+
+model_cdf   <- function(to){integrate(density_continuous, 0, to)$value}
+model_cdf_2 <- function(to){integrate(density_continuous_2, 0, to)$value}
+sample_cdf  <- function(to){mean(X <= to)}
+
+## Compare CDFs directly
+eval_points <- 8 * ppoints(1001)
+cdf_model   <- purrr::map_dbl(eval_points, .f = model_cdf)
+cdf_model_2 <- purrr::map_dbl(eval_points, .f = model_cdf_2)
+cdf_sample  <- purrr::map_dbl(eval_points, .f = sample_cdf)
+
+# Overlay CDFs
+pdf("cdf-comparison.pdf", width = 7, height = 5)
+plot(eval_points, cdf_model, type = "l", lwd = 3, col = "darkorange")
+lines(eval_points, cdf_model_2, lwd = 3, col = "purple")
+lines(eval_points, cdf_sample, col = "black", lty = 2)
+legend(
+  "bottomright",
+  legend = c("ZV", "JT", "Sample"),
+  lwd = 2,
+  lty = c(1,1,2),
+  col = c("darkorange", "purple", "black")
+)
+dev.off()
+
+## QQ plot
+pdf("qq-plot-comparison.pdf", width = 5, height = 5)
+plot(x = cdf_sample, y = cdf_model, col = "darkorange",  xlab = "sample quantile", ylab = "model quantile")
+points(x = cdf_sample, y = cdf_model_2, col = "purple")
+abline(a = 0 , b = 1, lwd = 2, col = "black")
 dev.off()
