@@ -15,8 +15,8 @@ library(threshr)
 # Results for Table 9 -----------------------------------------------------
 
 #Candidate threshold grids
-(thresholds <- quantile(nidd.thresh, seq(0,0.99, by=0.01)))
-(thresholds <- quantile(nidd.thresh, seq(0,0.98, by=0.01)))
+#(thresholds <- quantile(nidd.thresh, seq(0,0.99, by=0.01)))
+(thresholds <- quantile(nidd.thresh, seq(0,0.93, by=0.01)))
 (thresholds <- quantile(nidd.thresh, seq(0,0.9, by=0.01)))
 (thresholds <- quantile(nidd.thresh, seq(0,0.8, by=0.01)))
 (thresholds <- quantile(nidd.thresh, seq(0,0.8, by=0.2)))
@@ -35,6 +35,13 @@ set.seed(11111)
 set.seed(11111)
 (norththr <- summary(ithresh(nidd.thresh, u_vec = thresholds)))
 
+#Par ests
+u_hat <- 68.45
+excess <- nidd.thresh[nidd.thresh>u_hat] - u_hat 
+model_fit <- optim(GPD_LL, par=c(mean(excess), 0.1), z=excess, control = list(fnscale=-1), hessian = T)
+model_fit$par
+model_fit$par[1] + c(-1,1)*1.96*sqrt(diag(solve(-model_fit$hessian))[1])
+model_fit$par[2] + c(-1,1)*1.96*sqrt(diag(solve(-model_fit$hessian))[2])
 
 # Results for Figure 2 -----------------------------------------------------
 
