@@ -373,3 +373,10 @@ GPD_LL <- function(par, z){
     return(-1e7)
   }
 }
+
+
+transform_to_exp <- function (y,sig, xi){
+  std_exp <- (1 / xi) * log( 1 + xi * (y/sig))  
+  return(std_exp)
+}
+
