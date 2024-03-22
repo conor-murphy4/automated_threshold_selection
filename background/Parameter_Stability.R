@@ -1,5 +1,5 @@
 library(evir)
-source("helper_functions.R")
+source("src/helper_functions.R")
 library(mev)
 
 #Code from evir::shape function adjusted to include bootstrapped confidence intervals in parameter stability plot
@@ -79,56 +79,13 @@ shapestabboot <- function (data, thresholds,Q, reverse = TRUE, ci = 0.95, auto.s
   }
   if (labels) {
     labely <- expression(hat(xi))
-    title(xlab = "Threshold", ylab = labely, cex.lab=1.1)
-    mtext("Quantile", side = 3, line = 3, cex=1.1)
+    title(xlab = "Threshold", ylab = labely, cex.lab=1)
+    mtext("Quantile", side = 3, line = 2.5, cex=1)
   }
   invisible(mat)
 }
 
-
-# Results for Figure 1 in main text----------------------------------------------------
-
-#Plotting window
-dev.new(width=9.17, height=3.7,noRStudioGD = TRUE)
-par(mfrow=c(1,2),bg='transparent')
-
-#Generating Case 4 data with sample size of 200 
-# set.seed(12345)
-# data_all <- rgpd(4000, shape=0.1, scale=0.5, mu=0)
-# cens_thr<-1.0*rbeta(length(data_all),1,0.5)
-# keep <- data_all>cens_thr
-# data_keep <- data_all[keep]
-# data <- sample(data_keep, 200, replace = FALSE)
-
-#Candidate threshold grid
-Q <-  seq(0,0.95,by=0.05)
-thresh <- quantile(data_4, Q, names=FALSE)
-
-#Parameter stability plot
-shapestabboot(data_4, thresholds = thresh, Q=Q, reverse=F, boot=TRUE,m.boot=200)
-abline(v=1.0, col="green")
-
-#Comparison with profile intervals
-# tstab.gpd(xdat=data, thresh = thresh, method = "profile", which = "shape")
-# abline(v=1.0, col="green")
-
-####---------Nidd river data----------------------------
-data(nidd.thresh)
-
-#Candidate threshold grid
-Q <- seq(0,0.95,by=0.05)
-thresholds <- quantile(nidd.thresh,Q, names=F)
-
-#Parameter stability plot
-shapestabboot(nidd.thresh, thresholds = thresholds[-20], Q=Q, reverse=F, boot=TRUE,m.boot=200)
-
-#Comparison with profile intervals
-tstab.gpd(xdat=nidd.thresh, thresh = thresholds[-20], method = "profile", which = "shape")
-
-
-
-#Figure S.1: Parameter stability plots on extra simulated examples
-par(mfrow=c(1,3))
+#Read in data
 data_sim_study_Case_1 <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/data_sim_study_Case_1.rds")
 data_sim_study_Case_2 <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/data_sim_study_Case_2.rds")
 data_sim_study_Case_3 <- readRDS("//luna/FST/MA/Stor-i/murphyc4/Constant Threshold Selection/Rerun with quantiles/data_sim_study_Case_3.rds")
@@ -138,13 +95,36 @@ data_1 <- data_sim_study_Case_1[,1]
 data_2 <- data_sim_study_Case_2[,1]
 data_3 <- data_sim_study_Case_3[,1]
 data_4 <- data_sim_study_Case_4[,1]
+data(nidd.thresh)
 
-#Candidate threshold grid
-Q <- seq(0,0.95,by=0.05)
+#Plotting window
+dev.new(width=9.17, height=3.7,noRStudioGD = TRUE)
+
+#Candidate quantiles
+Q <-  seq(0,0.95,by=0.05)
+
+# Figure 1 in main text --------------------------------------
+
+par(mfrow=c(1,2),bg='transparent')
+
+#Candidate threshold grid for data_4
+thresh_4 <- quantile(data_4, Q, names=FALSE)
+
+shapestabboot(data_4, thresholds = thresh_4, Q=Q, reverse=F, boot=TRUE,m.boot=200)
+abline(v=1.0, col="green")
+
+thresh_Nidd <- quantile(nidd.thresh,Q, names=F)
+
+shapestabboot(nidd.thresh, thresholds = thresh_Nidd, Q=Q, reverse=F, boot=TRUE,m.boot=200)
+
+
+# Figure S.1: Parameter stability plots on extra simulated examples -------
+
+par(mfrow=c(1,3),bg='transparent')
+
 thresholds_1 <- quantile(data_1,Q, names=F)
 thresholds_2 <- quantile(data_2,Q, names=F)
 thresholds_3 <- quantile(data_3,Q, names=F)
-thresholds_4 <- quantile(data_4,Q, names=F)
 
 #Parameter stability plot
 shapestabboot(data_1, thresholds = thresholds_1, Q=Q, reverse=F, boot=FALSE,m.boot=200)
@@ -153,7 +133,6 @@ shapestabboot(data_2, thresholds = thresholds_2, Q=Q, reverse=F, boot=FALSE,m.bo
 abline(v=1, lty="dashed", col="green")
 shapestabboot(data_3, thresholds = thresholds_3, Q=Q, reverse=F, boot=FALSE,m.boot=200)
 abline(v=1, lty="dashed", col="green")
-shapestabboot(data_4, thresholds = thresholds_4, Q=Q, reverse=F, boot=FALSE,m.boot=200)
-abline(v=1, lty="dashed", col="green")
+
 
 
