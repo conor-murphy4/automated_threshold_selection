@@ -1,11 +1,11 @@
 # Load helper functions for working with the generalised Pareto distribution
-source('helper_functions.R')
+source('src/helper_functions.R')
 
 #-----------------------------------------------------------------------
 
 #' Threshold selection method for univariate extremes
 #'
-#' 'thresh_qq_metric' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
+#' 'eqd' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
 #'
 #' @author Conor Murphy
 #'
@@ -20,7 +20,7 @@ source('helper_functions.R')
 #' set.seed(12345)
 #' data_test1 <- rgpd(1000, shape = 0.1, scale=0.5, mu=1)
 #' thresholds1 <- quantile(data_test1,seq(0,0.95,by=0.05))
-#' (example1 <- thresh_qq_metric(data_test1, thresh = thresholds1))
+#' (example1 <- eqd(data_test1, thresh = thresholds1))
 #'
 #' set.seed(11111)
 #' test2 <- rgpd(10000, shape = 0.1, scale=0.5)
@@ -29,16 +29,16 @@ source('helper_functions.R')
 #' keep <- test2>cens_thr
 #' data_test2 <- test2[keep]
 #' thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
-#' (example2 <- thresh_qq_metric(data_test2,thresh = thresholds2))
+#' (example2 <- eqd(data_test2,thresh = thresholds2))
 
 
-thresh_qq_metric <- function(data, thresh, k = 100, c = 1){
+eqd <- function(data, thresh, k = 100, m = 500){
 
   # Check inputs are valid
   if (!is.numeric(data)) stop("Data must be a vector")
   if (!is.numeric(thresh)) stop("u to be tested needs to be a vector")
   if (k <= 0 | k %% 1 != 0) stop("Number of bootstrapped samples must be a positive integer")
-  #if (m <= 0 | m %% 1 != 0) stop("Number of equally spaced probabilities must be a positive integer")
+  if (m <= 0 | m %% 1 != 0) stop("Number of equally spaced probabilities must be a positive integer")
 
   meandistances <- xis <- sigmas <- num_excess <- numeric(length(thresh))
   for (i in 1:length(thresh)) {
@@ -46,7 +46,6 @@ thresh_qq_metric <- function(data, thresh, k = 100, c = 1){
     excess <- data[data > u] - u
     num_excess[i] <- length(excess)
     if (num_excess[i] > 10) {
-      m <- round(c*num_excess[i])
       mle0 <- mean(excess)
       init.fit <- optim(GPD_LL, z = excess, par = c(mle0,0.1), control = list(fnscale = -1))
       xis[i] <- init.fit$par[[2]]

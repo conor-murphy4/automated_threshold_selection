@@ -1,11 +1,11 @@
 # Load helper functions for working with the generalised Pareto distribution
-source('helper_functions.R')
+source('src/helper_functions.R')
 
 #-----------------------------------------------------------------------
 
 #' Threshold selection method for univariate extremes
 #'
-#' 'thresh_qq_metric' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
+#' 'eqd_Qpx' is an adjustment of the 'eqd' function which selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution. In this case, the sample quantiles are evaluated on the original rather than the bootstrapped sample excesses.
 #'
 #' @author Conor Murphy
 #'
@@ -20,7 +20,7 @@ source('helper_functions.R')
 #' set.seed(12345)
 #' data_test1 <- rgpd(1000, shape = 0.1, scale=0.5, mu=1)
 #' thresholds1 <- quantile(data_test1,seq(0,0.95,by=0.05))
-#' (example1 <- thresh_qq_metric(data_test1, thresh = thresholds1))
+#' (example1 <- eqd_Qpx(data_test1, thresh = thresholds1))
 #'
 #' set.seed(11111)
 #' test2 <- rgpd(10000, shape = 0.1, scale=0.5)
@@ -29,10 +29,10 @@ source('helper_functions.R')
 #' keep <- test2>cens_thr
 #' data_test2 <- test2[keep]
 #' thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
-#' (example2 <- thresh_qq_metric(data_test2,thresh = thresholds2))
+#' (example2 <- eqd_Qpx(data_test2,thresh = thresholds2))
 
 
-thresh_qq_metric_varty <- function(data, thresh, k = 100, m = 500){
+eqd_Qpx <- function(data, thresh, k = 100, m = 500){
 
   # Check inputs are valid
   if (!is.numeric(data)) stop("Data must be a vector")
@@ -56,9 +56,8 @@ thresh_qq_metric_varty <- function(data, thresh, k = 100, m = 500){
         mle <- mean(X)
         ifelse(xis[i] < 0, pars_init <-  c(mle, 0.1) ,pars_init <- c(sigmas[i], xis[i]) )
         gpd.fit <- optim(GPD_LL, z = X, par = pars_init, control = list(fnscale = -1))
-        quants <- qexp((1:m) / (m + 1), rate = 1)
-        X_exp <- transform_to_exp(X, sig=gpd.fit$par[1], xi=gpd.fit$par[2])
-        distances[j] <- (1 / m) * sum(abs(quantile(X_exp, probs = (1:m) / (m+1)) - quants))
+        quants <- qgpd((1:m) / (m + 1), scale = gpd.fit$par[[1]], shape = gpd.fit$par[[2]])
+        distances[j] <- (1 / m) * sum(abs(quantile(excess, probs = (1:m) / (m+1)) - quants))
       }
       meandistances[i] <- mean(distances)
     }
