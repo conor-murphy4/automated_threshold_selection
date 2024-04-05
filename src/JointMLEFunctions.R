@@ -1,6 +1,6 @@
 #######################################################################################################
 # Code taken from the supplementary materials of Wadsworth (2016) at https://www.tandfonline.com/doi/abs/10.1080/00401706.2014.998345 
-# and adapted by Conor Murphy to count the number of samples where the method fails to estimate a threshold. 
+# and adapted to count the number of samples where the method fails to estimate a threshold. 
 #######################################################################################################
 
 # NHPP.diag

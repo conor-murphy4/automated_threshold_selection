@@ -6,107 +6,157 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-R code used in the preprint “Automated threshold selection and
-associated inference uncertainty for univariate extremes” which can be
-viewed [here](https://arxiv.org/abs/2310.17999).
+R code used to output figures and tables in the preprint “Automated
+threshold selection and associated inference uncertainty for univariate
+extremes”.
+
+## Dependencies
+
+To run this code, several R packages are required which may be installed
+using the following code:
+
+``` r
+    required_pkgs <- c(
+        "threshr",
+        "evir",
+        "tea",
+        "Metrics"
+        )
+        
+    install.packages(required_pkgs)
+```
 
 ## Repository Overview
 
-`thresh_qq_metric.R` contains R code to estimate a constant threshold,
-the excesses of which can be closely modelled by a Generalised Pareto
-distribution (GPD).
+The structure of the repository follows the main sections of the paper
+which include figures/tables. The source code for the methods utilised
+in the paper is contained in `/src`.
+
+### `/src`
+
+`eqd.R` contains R code to estimate a constant threshold, the excesses
+of which can be closely modelled by a Generalised Pareto distribution
+(GPD), utilising the expected quantile discrepancy (EQD) method.
+
+`eqd_***.R` contains variants of the EQD method used for specific
+sensitivity experiments and comparisons.
 
 `helper_functions.R` contains functions for the GPD which feed into
-`thresh_qq_metric.R`.
+`eqd.R`.
 
-`background` contains the R code file to reproduce the parameter
-stability plots shown in Section 2 of the main text.
+`JointMLEFunctions.R` contains R code to implement the Wadsworth (2016)
+method for threshold selection. This code was taken from the
+supplementary materials of Wadsworth (2016)
+[here](https://www.tandfonline.com/doi/abs/10.1080/00401706.2014.998345)
+and adapted to count the number of samples where the method fails to
+estimate a threshold.
 
-`simulation_study` contains the R code files to reproduce the simulation
-study results provided in Section 6 of the main text and Section S:4 of
-the supplementary material. These files are still in development.
+`parameter_stability.R` contains code from `evir::shape` function
+adjusted to include bootstrapped confidence intervals in parameter
+stability plots.
 
-`application_to_river_flows` contains the R code file to reproduce the
-analysis of the River Nidd dataset provided in Section 7 of the main
-text.
+### `/data`
 
-## Motivation
+This section contains all simulated datasets analysed in Section 6 of
+the main text and the supplementary material.
 
-This method assumes data is independent and identically distributed. The
-function `thresh_qq_metric` selects a threshold from the set of proposed
-thresholds which allows for excesses to be modelled closely by a GPD
-while also accounting for parameter estimation uncertainty.
+### `/Section 2`
 
-When selecting a threshold for a particular dataset, there is a
-bias-variance trade-off which needs to be addressed. Too low a threshold
-is likely to violate the asymptotic basis of the GPD which would lead to
-bias in the fit of the model while choosing too high a threshold would
-generate very few exceedances with which the model can be estimated,
-leading to high parameter uncertainty. Thus, we want to choose as low a
-threshold as possible subject to the GPD providing a reasonable fit to
-the data. Using simulated data, our method has been shown to directly
-tackle this trade-off.
+`Figure_1.R` contains code to reproduce the two parameter stability
+plots shown in Figure_1 in the main text.
 
-## Method Details
+### `/Section 6`
 
-The threshold selection method modifies the approach developed in [Varty
-et al. (2021)](https://arxiv.org/abs/2102.00884), for use in a wider
-variety of extreme value modelling problems. Namely, the following
-adjustments have been made:
+`threshold_selection_cases1-4.R` provides code to generate data (and
+save in `/data`) for Cases 1-4, implement the three threshold selection
+methods, namely the EQD, Wadsworth (2016) and Northrop et al.(2017), and
+save the results in `/output/threshold_selection`.
 
-    - observations are independent and identically distributed with continuous values,
-    - a constant, rather than a variable, threshold is to be selected. 
+`RMSE_thresholds_case1-4.R` outputs and saves Table 2 which contains the
+root-mean-squared errors (RMSEs) of the selected thresholds for each of
+the compared methods.
 
-The method has been shown to perform favourably in this context compared
-to competing methods. Further extensions are underway so that the method
-may be applied to more complicated settings, such as incorporating
-covariate dependence into threshold and/or GPD parameters.
+`RMSE_quantiles_case1-4.R` outputs and saves Table 3 which contains the
+RMSEs of several high quantile estimates using the estimated thresholds
+for each of the compared methods.
 
-### Mathematical Details
+`quantile_coverage_case4.R` employs Algorithm 1 and 2 (detailed in
+Section 5 of the main text) and saves the respective sets of
+bootstrapped quantile estimates for a range of exceedance probabilities.
+Confidence intervals are then calculated and the coverage of true
+quantiles is assessed and outputted into Table S.19 (a subset of which
+is shown in Table 4) which is saved in `/output/tables`.
 
-A threshold is selected from a user-specified set of candidate
-thresholds by using a quantile-based assessment to quantify the
-goodness-of-fit. Specifically, this is done by measuring the expected
-deviation from the line of equality on a QQ-plot for each candidate
-threshold.
+`threshold_selection_gaussian.R`, `RMSE_quantiles_gaussian.R` and
+`quantile_coverage_gaussian.R` contain code to perform threshold
+selection, calculate RMSEs of quantile estimates and implement
+Algorithms 1 and 2 to assess coverage of the true quantiles as above but
+for Gaussian samples, resulting in Table 5 and Table S.20 (a subset of
+which is shown in Table 6).
 
-Let $y$ be the sample of excesses of some proposed threshold choice and
-$y^{(i)}$ be the $i^{\text{th}}$ bootstrapped sample of $y$. Denote by
-$Q_{(i)}(p) : [0,1] \rightarrow \mathbb{R}^+$ the sample quantile
-function of $y^{(i)}$ for $i = 1,\dots, k$ while
-$M_{(i)}(p) : [0,1] \rightarrow \mathbb{R}^+$ represents the
-model/theoretical quantile function based on the parameters fitted to
-$y^{(i)}$.
+### `/Section 7`
 
-The metric, $d_{(i)}$, measures the disparity between the
-$i^{\text{th}}$ (of $k$) bootstrapped sample of threshold excesses and
-the relevant quantiles of the fitted GPD model. The discrepancy between
-the observed data and fitted model is evaluated at $m$ equally-spaced
-evaluation probabilities, $\{p_j = j / (m+1): j = 1,\dots,m\}$. This
-results in the following form for the threshold selection metric:
+`Table_7_River_Nidd_dataset_selected_thresholds.R` provides code to
+perform threshold selection on the River Nidd dataset for each of the
+methods using a range of different candidate threshold grids and output
+Table 7 and save to `/output/tables`.
 
-$$d_{(i)} = \frac{1}{m} \sum_{j=1}^{m} |M_{(i)}(p_j) - Q_{(i)}(p_j)|,$$
+`Figure_2_River_Nidd_analysis.R` performs further analysis on the River
+Nidd dataset. Using the estimated threshold from the EQD method, a
+QQ-plot is constructed with 95% tolerance bounds and a return level plot
+is outputted which utilises Algorithm 1 and 2, showing two different
+sets of 95% confidence intervals. Both plots are outputted and saved as
+Figure 2 in `/output/Nidd_analysis`.
 
-where
-$M_{(i)}(p) = \frac{\hat{\sigma}_i}{\hat{\xi}_i}\left[(1-p)^{-\hat{\xi}_i}-1\right]$
-with $(\hat{\sigma}_i, \hat{\xi}_i)$ being the MLEs for the scale and
-shape parameters of the GPD fitted to the $i^{\text{th}}$ bootstrapped
-excesses $y^{(i)}$.
+### `/output`
 
-The expected distance metric $d$, used to select the optimal threshold
-is then defined as:
+`/parameter_stability` provides the outputted parameter stability plots
+for Figure 1 of the main text and Figure S.1 in the supplementary
+material.
 
-$$d = \frac{1}{k} \sum_{i = 1}^{k} d_{(i)}.$$
+`/threshold_selection` contains the estimated thresholds for each of the
+compared methods after implementation on each of the replicated samples
+from Cases 1-4 and the Gaussian cases. Results are also included for the
+Danielsson (2001) and Danielsson et al. (2019) methods which are only
+analysed in the supplementary material.
+
+`/coverage` contains the sets of bootstrapped quantile estimates for the
+Case 4 and Gaussian samples outputted from Algorithm 1 and 2.
+
+`/tables` provides the outputted RMSEs, bias and variance results for
+estimated thresholds and subsequent quantile estimates, as well as
+coverage probabilities, corresponding to each of the tables shown in
+Section 6 and 7 of the main paper and in the supplementary material.
+
+`/Nidd_analysis` contains the outputted plot corresponding to Figure 2
+in Section 7 of the main text which shows a QQ-plot and return level
+plot for the River Nidd dataset.
+
+A summary table showing a mapping of source files to outputted
+figures/tables in the main text is given below.
+
+### Summary
+
+| Figure/Table | Section |           source code            |                   code to output                   |
+|:------------:|:-------:|:--------------------------------:|:--------------------------------------------------:|
+|   Figure 1   |    2    |     `parameter_stability.R`      |                    `Figure_1.R`                    |
+|   Table 2    |    6    | `threshold_selection_cases1-4.R` |            `RMSE_thresholds_case1-4.R`             |
+|   Table 3    |    6    | `threshold_selection_cases1-4.R` |             `RMSE_quantiles_case1-4.R`             |
+|   Table 4    |    6    | `threshold_selection_cases1-4.R` |            `quantile_coverage_case4.R`             |
+|   Table 5    |    6    | `threshold_selection_gaussian.R` |            `RMSE_quantiles_gaussian.R`             |
+|   Table 6    |    6    | `threshold_selection_gaussian.R` |           `quantile_coverage_gaussian.R`           |
+|   Table 7    |    7    |  `eqd.R`, `JointMLEFunctions.R`  | `Table_7_River_Nidd_dataset_selected_thresholds.R` |
+|   Figure 2   |    7    |             `eqd.R`              |          `Figure_2_River_Nidd_analysis.R`          |
 
 ## Example Usage
 
 ``` r
 
-source("thresh_qq_metric.R")
+source("src/eqd.R")
 set.seed(12345)
 data_test1 <- rgpd(1000, shape = 0.1, scale=0.5, mu=1)
 thresholds1 <- seq(0.5, 2.5, by=0.1)
-example1 <- thresh_qq_metric(data_test1, thresh = thresholds1, k=100, m=500)
+example1 <- eqd(data_test1, thresh = thresholds1, k=100, m=500)
 example1
 #> $thresh
 #> [1] 1
@@ -126,7 +176,7 @@ plot(thresholds1, example1$dists, xlab="Threshold", ylab="Metric value")
 abline(v=example1$thresh, col="red", lwd=2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 
@@ -137,7 +187,7 @@ cens_thr<-u*rbeta(length(test2),1,0.5)
 keep <- test2>cens_thr
 data_test2 <- test2[keep]
 thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
-example2 <- thresh_qq_metric(data_test2,thresh = thresholds2, k=100, m=500)
+example2 <- eqd(data_test2,thresh = thresholds2, k=100, m=500)
 example2
 #> $thresh
 #>       45% 
@@ -158,9 +208,4 @@ plot(thresholds2, example2$dists, xlab="Threshold", ylab="Metric value")
 abline(v=example2$thresh, col="red", lwd=2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
-
-## Contact
-
-If you have any questions, please contact <c.murphy4@lancaster.ac.uk>.
-Please include “Threshold Code” in the subject of the email.
+![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
