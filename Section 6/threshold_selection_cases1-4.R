@@ -11,12 +11,14 @@ myquantile <- wadsquantile <- northquantile <- numeric(n)
 myscale <- wadsscale <- northscale <- numeric(n)
 myshape <- wadsshape <- northshape <- numeric(n)
 mylen <- wadslen <- northlen <- numeric(n)
+data_matrix <- matrix(NA, nrow=1200, ncol=500)
 for(ii in 1:n){
   print(ii)
   set.seed(ii)
   dat1 <- runif(200, 0.5, 1.0)
   dat2 <- rgpd(1000, shape=0.1, scale=0.5, mu=1.0)
   data <- c(dat1, dat2)
+  data_matrix[,ii] <- data
   thresh <- quantile(data, probs, names=F)
   
   #EQD method
@@ -58,18 +60,25 @@ eqdthr_case1 <- data.frame(thr=mythresh,quantile=myquantile, scale=myscale, shap
 wadsthr_case1 <- data.frame(thr=wadsthresh,quantile=wadsquantile, scale=wadsscale, shape=wadsshape, len=wadslen)
 norththr_case1 <- data.frame(thr=norththresh, quantile=northquantile, scale=northscale, shape=northshape, len=northlen)
 
+write.csv(data_matrix, "data/Case_1.csv")
+write.csv(eqdthr_case1, "output/threshold_selection/eqd_case1.csv")
+write.csv(wadsthr_case1, "output/threshold_selection/wads_case1.csv")
+write.csv(norththr_case1, "output/threshold_selection/north_case1.csv")
+
 #Case 2: small sample size
 mythresh <- wadsthresh <- norththresh <- numeric(n)
 myquantile <- wadsquantile <- northquantile <- numeric(n)
 myscale <- wadsscale <- northscale <- numeric(n)
 myshape <- wadsshape <- northshape <- numeric(n)
 mylen <- wadslen <- northlen <- numeric(n)
+data_matrix <- matrix(NA, nrow=480, ncol=500)
 for(ii in 1:n){
   print(ii)
   set.seed(ii)
   dat1 <- runif(80, 0.5, 1.0)
   dat2 <- rgpd(400, shape=0.1, scale=0.5, mu=1.0)
   data <- c(dat1, dat2)
+  data_matrix[,ii] <- data
   thresh <- quantile(data, probs, names=F)
   
   #EQD method
@@ -112,6 +121,10 @@ eqdthr_case2 <- data.frame(thr=mythresh,quantile=myquantile, scale=myscale, shap
 wadsthr_case2 <- data.frame(thr=wadsthresh,quantile=wadsquantile, scale=wadsscale, shape=wadsshape, len=wadslen)
 norththr_case2 <- data.frame(thr=norththresh, quantile=northquantile, scale=northscale, shape=northshape, len=northlen)
 
+write.csv(data_matrix, "data/Case_2.csv")
+write.csv(eqdthr_case2, "output/threshold_selection/eqd_case2.csv")
+write.csv(wadsthr_case2, "output/threshold_selection/wads_case2.csv")
+write.csv(norththr_case2, "output/threshold_selection/north_case2.csv")
 
 #Case 3: negative shape parameter
 myquantile <- wadsquantile <- northquantile <- numeric(n)
@@ -119,12 +132,14 @@ mythresh <- wadsthresh <- norththresh <- numeric(n)
 myscale <- wadsscale <- northscale <- numeric(n)
 myshape <- wadsshape <- northshape <- numeric(n)
 mylen <- wadslen <- northlen <- numeric(n)
+data_matrix <- matrix(NA, nrow=2400, ncol=500)
 for(ii in 1:n2){
   print(ii)
   set.seed(ii)
   dat1 <- runif(400, 0.5, 1.0)
   dat2 <- rgpd(2000, shape=-0.05, scale=0.5, mu=1.0)
   data <- c(dat1, dat2)
+  data_matrix[,ii] <- data
   thresh <- quantile(data, probs, names=F)
   
   #EQD method
@@ -167,6 +182,10 @@ eqdthr_case3 <- data.frame(thr=mythresh,quantile=myquantile, scale=myscale, shap
 wadsthr_case3 <- data.frame(thr=wadsthresh,quantile=wadsquantile, scale=wadsscale, shape=wadsshape, len=wadslen)
 norththr_case3 <- data.frame(thr=norththresh, quantile=northquantile, scale=northscale, shape=northshape, len=northlen)
 
+write.csv(data_matrix, "data/Case_3.csv")
+write.csv(eqdthr_case3, "output/threshold_selection/eqd_case3.csv")
+write.csv(wadsthr_case3, "output/threshold_selection/wads_case3.csv")
+write.csv(norththr_case3, "output/threshold_selection/north_case3.csv")
 
 # Case 4: partially-observed GPD
 mythresh <- wadsthresh <- norththresh <- numeric(n)
@@ -174,6 +193,7 @@ myquantile <- wadsquantile <- northquantile <- numeric(n)
 myscale <- wadsscale <- northscale <- numeric(n)
 myshape <- wadsshape <- northshape <- numeric(n)
 mylen <- wadslen <- northlen <- numeric(n)
+data_matrix <- matrix(NA, nrow=1000, ncol=500)
 for(ii in 1:n){
   print(ii)
   set.seed(ii)
@@ -182,6 +202,7 @@ for(ii in 1:n){
   data_above <- sample(data_all[data_all > 1], 279, replace=FALSE)
   data_below <- sample(data_all[data_all > cens_thr & data_all <= 1], 721, replace = FALSE)
   data <- c(data_below, data_above)
+  data_matrix[,ii] <- data
   thresh <- quantile(data, probs, names=F)
   
   #EQD method
@@ -224,3 +245,7 @@ eqdthr_case4 <- data.frame(thr=mythresh,quantile=myquantile, scale=myscale, shap
 wadsthr_case4 <- data.frame(thr=wadsthresh,quantile=wadsquantile, scale=wadsscale, shape=wadsshape, len=wadslen)
 norththr_case4 <- data.frame(thr=norththresh, quantile=northquantile, scale=northscale, shape=northshape, len=northlen)
 
+write.csv(data_matrix, "data/Case_4.csv")
+write.csv(eqdthr_case4, "output/threshold_selection/eqd_case4.csv")
+write.csv(wadsthr_case4, "output/threshold_selection/wads_case4.csv")
+write.csv(norththr_case4, "output/threshold_selection/north_case4.csv")
