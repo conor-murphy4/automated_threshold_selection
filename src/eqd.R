@@ -23,11 +23,14 @@ source('src/helper_functions.R')
 #' (example1 <- eqd(data_test1, thresh = thresholds1))
 #'
 #' set.seed(11111)
-#' test2 <- rgpd(10000, shape = 0.1, scale=0.5)
+#' 
+#' 
+#' test2_data_all <- rgpd(4000, shape=0.1, scale=0.5, mu=0)
 #' u <- 1
-#' cens_thr<-u*rbeta(length(test2),1,0.5)
-#' keep <- test2>cens_thr
-#' data_test2 <- test2[keep]
+#' cens_thr <- u*rbeta(length(test2_data_all),1,2)
+#' data_above <- sample(test2_data_all[test2_data_all > u], 279, replace=FALSE)
+#' data_below <- sample(test2_data_all[test2_data_all > cens_thr & test2_data_all <= u], 721, replace = FALSE) 
+#' data_test2 <- c(data_below, data_above)
 #' thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
 #' (example2 <- eqd(data_test2,thresh = thresholds2))
 
