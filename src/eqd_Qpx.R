@@ -15,21 +15,6 @@ source('src/helper_functions.R')
 #' @param m A positive integer denoting the number of equally-spaced probabilities at which to evaluate quantiles.
 #'
 #' @returns A list containing the chosen threshold, the parameters of the fitted GPD, the number of observations above the chosen thresholds and the metric values 'd' corresponding to each proposed threshold.
-#'
-#' @examples
-#' set.seed(12345)
-#' data_test1 <- rgpd(1000, shape = 0.1, scale=0.5, mu=1)
-#' thresholds1 <- quantile(data_test1,seq(0,0.95,by=0.05))
-#' (example1 <- eqd_Qpx(data_test1, thresh = thresholds1))
-#'
-#' set.seed(11111)
-#' test2 <- rgpd(10000, shape = 0.1, scale=0.5)
-#' u <- 1
-#' cens_thr<-u*rbeta(length(test2),1,0.5)
-#' keep <- test2>cens_thr
-#' data_test2 <- test2[keep]
-#' thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
-#' (example2 <- eqd_Qpx(data_test2,thresh = thresholds2))
 
 
 eqd_Qpx <- function(data, thresh, k = 100, m = 500){

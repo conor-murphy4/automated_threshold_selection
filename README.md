@@ -38,7 +38,7 @@ in the paper is contained in `/src`.
 of which can be closely modelled by a Generalised Pareto distribution
 (GPD), utilising the expected quantile discrepancy (EQD) method.
 
-`eqd_***.R` contains variants of the EQD method used for specific
+`eqd_***.R` contain variants of the EQD method used for specific
 sensitivity experiments and comparisons.
 
 `helper_functions.R` contains functions for the GPD which feed into
@@ -137,16 +137,16 @@ figures/tables in the main text is given below.
 
 ### Summary
 
-| Figure/Table | Section |           source code            |                   code to output                   |
-|:------------:|:-------:|:--------------------------------:|:--------------------------------------------------:|
-|   Figure 1   |    2    |     `parameter_stability.R`      |                    `Figure_1.R`                    |
-|   Table 2    |    6    | `threshold_selection_cases1-4.R` |            `RMSE_thresholds_case1-4.R`             |
-|   Table 3    |    6    | `threshold_selection_cases1-4.R` |             `RMSE_quantiles_case1-4.R`             |
-|   Table 4    |    6    | `threshold_selection_cases1-4.R` |            `quantile_coverage_case4.R`             |
-|   Table 5    |    6    | `threshold_selection_gaussian.R` |            `RMSE_quantiles_gaussian.R`             |
-|   Table 6    |    6    | `threshold_selection_gaussian.R` |           `quantile_coverage_gaussian.R`           |
-|   Table 7    |    7    |  `eqd.R`, `JointMLEFunctions.R`  | `Table_7_River_Nidd_dataset_selected_thresholds.R` |
-|   Figure 2   |    7    |             `eqd.R`              |          `Figure_2_River_Nidd_analysis.R`          |
+| Figure/Table | Section |           Code to generate Figure/Table            |                Dependencies                |
+|:------------:|:-------:|:--------------------------------------------------:|:------------------------------------------:|
+|   Figure 1   |    2    |   `Figure_1_example_parameter_stability_plots.R`   |          `parameter_stability.R`           |
+|   Table 2    |    6    |            `RMSE_thresholds_case1-4.R`             |      `threshold_selection_cases1-4.R`      |
+|   Table 3    |    6    |             `RMSE_quantiles_case1-4.R`             |      `threshold_selection_cases1-4.R`      |
+|   Table 4    |    6    |            `quantile_coverage_case4.R`             | `threshold_selection_cases1-4.R` , `eqd.R` |
+|   Table 5    |    6    |            `RMSE_quantiles_gaussian.R`             |      `threshold_selection_gaussian.R`      |
+|   Table 6    |    6    |           `quantile_coverage_gaussian.R`           | `threshold_selection_gaussian.R`, `eqd.R`  |
+|   Table 7    |    7    | `Table_7_River_Nidd_dataset_selected_thresholds.R` |       `eqd.R`, `JointMLEFunctions.R`       |
+|   Figure 2   |    7    |          `Figure_2_River_Nidd_analysis.R`          |                  `eqd.R`                   |
 
 ## Example Usage
 

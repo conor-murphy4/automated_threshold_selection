@@ -5,7 +5,8 @@ source('src/helper_functions.R')
 
 #' Threshold selection method for univariate extremes
 #'
-#' 'eqd' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
+#' 'eqd_boot' is a variant of the 'eqd' function which output the mean-absolute deviations calculated on each bootstrapped sample.
+#' 'eqd_mnu_boot' is a variant of the 'eqd_mnu' function which outputs the bootstrapped mean-absolute devations as above but also the number of equally-spaced probabilities on which the quantile function is evaluated are allowed to vary with the number of excesses of each candidate threshold.
 #'
 #' @author Conor Murphy
 #'
