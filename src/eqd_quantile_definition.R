@@ -5,7 +5,7 @@ source('src/helper_functions.R')
 
 #' Threshold selection method for univariate extremes
 #'
-#' 'eqd' selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution.
+#' 'eqd_quant_def' is an variant of the 'eqd' function which selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution. In this case, the definition for $p_j$ and $\bm{q}$ can be varied. This was used to assess the effect of different definitions for these quantities within the sample quantile function used in the EQD.
 #'
 #' @author Conor Murphy
 #'
@@ -13,6 +13,8 @@ source('src/helper_functions.R')
 #' @param thresh A numeric vector of proposed thresholds to test.
 #' @param k  A positive integer denoting the number of bootstraps.
 #' @param m A positive integer denoting the number of equally-spaced probabilities at which to evaluate quantiles.
+#' @param type An integer between 1 and 9 selecting one of the nine quantile defintions.
+#' @param probs_def An integer (default of 1) which decides between two definitions of evaluation probabilities for the quantile functions.
 #'
 #' @returns A list containing the chosen threshold, the parameters of the fitted GPD, the number of observations above the chosen thresholds and the metric values 'd' corresponding to each proposed threshold.
 #'
