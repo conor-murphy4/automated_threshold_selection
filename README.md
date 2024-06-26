@@ -8,7 +8,7 @@
 
 R code used to output figures and tables in the preprint “Automated
 threshold selection and associated inference uncertainty for univariate
-extremes”.
+extremes” which can be viewed [here](https://arxiv.org/abs/2310.17999) .
 
 ## Dependencies
 
@@ -181,31 +181,36 @@ abline(v=example1$thresh, col="red", lwd=2)
 ``` r
 
 set.seed(11111)
-test2 <- rgpd(10000, shape = 0.1, scale=0.5)
-u <- 1
-cens_thr<-u*rbeta(length(test2),1,0.5)
-keep <- test2>cens_thr
-data_test2 <- test2[keep]
+data_all <- rgpd(4000, shape=0.1, scale=0.5, mu=0)
+cens_thr<-rbeta(length(data_all),1,2)
+data_above <- sample(data_all[data_all > 1], 279, replace=FALSE)
+data_below <- sample(data_all[data_all > cens_thr & data_all <= 1], 721, replace = FALSE)
+data_test2 <- c(data_below, data_above)
 thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
 example2 <- eqd(data_test2,thresh = thresholds2, k=100, m=500)
 example2
 #> $thresh
-#>       45% 
-#> 0.8927004 
+#>       30% 
+#> 0.4169537 
 #> 
 #> $par
-#> [1] 0.63018743 0.08880792
+#> [1] 0.644593096 0.007900157
 #> 
 #> $num_excess
-#> [1] 1868
+#> [1] 700
 #> 
 #> $dists
-#>  [1] 0.18373360 0.11992257 0.09537823 0.07974723 0.06895573 0.05440206
-#>  [7] 0.04160290 0.03248768 0.02702868 0.01690360 0.01708816 0.01835272
-#> [13] 0.01930755 0.02121212 0.02478849 0.02826063 0.02996687 0.03359736
-#> [19] 0.04577595 0.05846480
+#>  [1] 0.07763146 0.04768825 0.03959962 0.03359459 0.02229891 0.02134857
+#>  [7] 0.02107620 0.02364104 0.02604049 0.02559984 0.02475472 0.02912688
+#> [13] 0.02909661 0.03018644 0.03360872 0.03933678 0.04280008 0.04991603
+#> [19] 0.06532955 0.07936680
 plot(thresholds2, example2$dists, xlab="Threshold", ylab="Metric value")
 abline(v=example2$thresh, col="red", lwd=2)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+
+### Contact
+
+If you have questions, please contact <c.murphy4@lancaser.ac.uk>. Please
+include “Threshold code” in the subject of the email.

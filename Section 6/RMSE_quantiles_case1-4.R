@@ -43,7 +43,7 @@ estimated_quantile <- function(df,p,n){
 }
 
 #---------RMSE of estimated quantiles for Case 1-4--------------------
-RMSE_case1234 <- list(4)
+RMSE_case1234 <- vector('list',4)
 sample_sizes <- c(1200, 480, 2400, 1000)
 true_pars <- matrix(c(0.5,0.1, 0.5,0.1, 0.5, -0.05, 0.5,0.1), nrow=4, ncol=2, byrow=T)
 for(case in 1:4){

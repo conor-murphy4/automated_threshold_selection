@@ -26,6 +26,7 @@ for(ii in 1:n){
   myquantile[ii] <- probs[thresh==mythresh[ii]]
   myscale[ii] <- myres$par[1]
   myshape[ii] <- myres$par[2]
+  mylen[ii] <- myres$num_excess
   
   #Wadsworth 2016 method
   wadsthresh[ii] <- NHPP.diag(data, u=thresh, plot.out = FALSE, UseQuantiles = FALSE)$thresh[[1]]
@@ -86,6 +87,7 @@ for(ii in 1:n){
   myquantile[ii] <- probs[thresh==mythresh[ii]]
   myscale[ii] <- myres$par[1]
   myshape[ii] <- myres$par[2]
+  mylen[ii] <- myres$num_excess
 
   #Wadsworth 2016 method
   wadsthresh[ii] <- NHPP.diag(data, u=thresh, plot.out = FALSE, UseQuantiles = FALSE)$thresh[[1]]

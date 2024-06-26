@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-R code used to output figures and tables in the preprint "Automated threshold selection and associated inference uncertainty for univariate extremes".
+R code used to output figures and tables in the preprint "Automated threshold selection and associated inference uncertainty for univariate extremes" which can be viewed  [here](https://arxiv.org/abs/2310.17999) .
 
 ## Dependencies
 To run this code, several R packages are required which may be installed using the following code:
@@ -116,14 +116,17 @@ plot(thresholds1, example1$dists, xlab="Threshold", ylab="Metric value")
 abline(v=example1$thresh, col="red", lwd=2)
 
 set.seed(11111)
-test2 <- rgpd(10000, shape = 0.1, scale=0.5)
-u <- 1
-cens_thr<-u*rbeta(length(test2),1,0.5)
-keep <- test2>cens_thr
-data_test2 <- test2[keep]
+data_all <- rgpd(4000, shape=0.1, scale=0.5, mu=0)
+cens_thr<-rbeta(length(data_all),1,2)
+data_above <- sample(data_all[data_all > 1], 279, replace=FALSE)
+data_below <- sample(data_all[data_all > cens_thr & data_all <= 1], 721, replace = FALSE)
+data_test2 <- c(data_below, data_above)
 thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
 example2 <- eqd(data_test2,thresh = thresholds2, k=100, m=500)
 example2
 plot(thresholds2, example2$dists, xlab="Threshold", ylab="Metric value")
 abline(v=example2$thresh, col="red", lwd=2)
 ```
+
+### Contact
+If you have questions, please contact c.murphy4@lancaser.ac.uk. Please include "Threshold code" in the subject of the email.
