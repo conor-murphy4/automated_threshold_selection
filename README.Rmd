@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-R code used to output figures and tables in the preprint "Automated threshold selection and associated inference uncertainty for univariate extremes" which can be viewed  [here](https://arxiv.org/abs/2310.17999) .
+R code used to output figures and tables in the preprint "Automated threshold selection and associated inference uncertainty for univariate extremes".
 
 ## Dependencies
 To run this code, several R packages are required which may be installed using the following code:
@@ -54,7 +54,7 @@ This section contains all simulated datasets analysed in Section 6 of the main t
 
 ### `/Section 2`
 
-`Figure_1.R` contains code to reproduce the two parameter stability plots shown in Figure_1 in the main text.
+`Figure_1_example_parameter_stability_plots.R` contains code to reproduce the two parameter stability plots shown in Figure_1 in the main text.
 
 ### `/Section 6`
 
@@ -127,6 +127,3 @@ example2
 plot(thresholds2, example2$dists, xlab="Threshold", ylab="Metric value")
 abline(v=example2$thresh, col="red", lwd=2)
 ```
-
-### Contact
-If you have questions, please contact c.murphy4@lancaser.ac.uk. Please include "Threshold code" in the subject of the email.

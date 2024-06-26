@@ -8,7 +8,7 @@
 
 R code used to output figures and tables in the preprint “Automated
 threshold selection and associated inference uncertainty for univariate
-extremes” which can be viewed [here](https://arxiv.org/abs/2310.17999) .
+extremes”.
 
 ## Dependencies
 
@@ -62,8 +62,9 @@ the main text and the supplementary material.
 
 ### `/Section 2`
 
-`Figure_1.R` contains code to reproduce the two parameter stability
-plots shown in Figure_1 in the main text.
+`Figure_1_example_parameter_stability_plots.R` contains code to
+reproduce the two parameter stability plots shown in Figure_1 in the
+main text.
 
 ### `/Section 6`
 
@@ -209,8 +210,3 @@ abline(v=example2$thresh, col="red", lwd=2)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
-
-### Contact
-
-If you have questions, please contact <c.murphy4@lancaser.ac.uk>. Please
-include “Threshold code” in the subject of the email.
