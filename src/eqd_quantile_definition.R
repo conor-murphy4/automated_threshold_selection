@@ -5,7 +5,7 @@ source('src/helper_functions.R')
 
 #' Threshold selection method for univariate extremes
 #'
-#' 'eqd_quant_def' is an variant of the 'eqd' function which selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution. In this case, the definition for $p_j$ and $\bm{q}$ can be varied. This was used to assess the effect of different definitions for these quantities within the sample quantile function used in the EQD.
+#' 'eqd_quant_def' is an variant of the 'eqd' function which selects a constant threshold above which the data can be most closely modelled by a Generalised Pareto distribution. In this case, the definition for p_j and q within the quantile functions can be varied. This was used to assess the effect of different definitions for these quantities used in the EQD.
 #'
 #' @author Conor Murphy
 #'
@@ -17,21 +17,6 @@ source('src/helper_functions.R')
 #' @param probs_def An integer (default of 1) which decides between two definitions of evaluation probabilities for the quantile functions.
 #'
 #' @returns A list containing the chosen threshold, the parameters of the fitted GPD, the number of observations above the chosen thresholds and the metric values 'd' corresponding to each proposed threshold.
-#'
-#' @examples
-#' set.seed(12345)
-#' data_test1 <- rgpd(1000, shape = 0.1, scale=0.5, mu=1)
-#' thresholds1 <- quantile(data_test1,seq(0,0.95,by=0.05))
-#' (example1 <- eqd(data_test1, thresh = thresholds1))
-#'
-#' set.seed(11111)
-#' test2 <- rgpd(10000, shape = 0.1, scale=0.5)
-#' u <- 1
-#' cens_thr<-u*rbeta(length(test2),1,0.5)
-#' keep <- test2>cens_thr
-#' data_test2 <- test2[keep]
-#' thresholds2 <- quantile(data_test2,seq(0, 0.95, by=0.05))
-#' (example2 <- eqd(data_test2,thresh = thresholds2))
 
 
 eqd_quant_def <- function(data, thresh, k = 100, m = 500, type=7, probs_def=1){
