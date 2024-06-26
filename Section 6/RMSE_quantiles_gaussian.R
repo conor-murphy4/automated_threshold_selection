@@ -21,7 +21,7 @@ estimated_quantile <- function(df,p,n){
 }
 
 #---------RMSE of estimated quantiles for Gaussian case--------------------
-RMSE_gauss <- list(2)
+RMSE_gauss <- vector('list',2)
 sample_sizes <- c(2000,20000)
 for(case in 1:2){
   n <- sample_sizes[case]

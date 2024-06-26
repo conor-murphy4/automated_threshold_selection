@@ -18,7 +18,7 @@ for(i in 1:7){
   thresholds <- thresholds_list[[i]]
   #EQD
   set.seed(11111) 
-  EQD_thr[i] <- thresh_qq_metric(nidd.thresh, thresholds, k=200)$thresh
+  EQD_thr[i] <- eqd(nidd.thresh, thresholds, k=200)$thresh
   #Wadsworth
   set.seed(11111)
   wads_thr[i] <- NHPP.diag(nidd.thresh, u=thresholds, plot.out=FALSE, UseQuantiles = FALSE)$thresh

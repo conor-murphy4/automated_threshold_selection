@@ -27,6 +27,7 @@ for(ii in 1:n){
   myquantile[ii] <- probs[thresh==mythresh[ii]]
   myscale[ii] <- myres$par[1]
   myshape[ii] <- myres$par[2]
+  mylen[ii] <- myres$num_excess
 
   #Wadsworth 2016 method
   wadsthresh[ii] <- NHPP.diag(data, u=thresh, plot.out = FALSE, UseQuantiles = FALSE)$thresh[[1]]
@@ -87,7 +88,7 @@ for(ii in 1:n){
   myquantile[ii] <- probs[thresh==mythresh[ii]]
   myscale[ii] <- myres$par[1]
   myshape[ii] <- myres$par[2]
-  mylen[ii] <- myres$num
+  mylen[ii] <- myres$num_excess
 
   #Wadsworth 2016 method
   wadsthresh[ii] <- NHPP.diag(data, u=thresh, plot.out = FALSE, UseQuantiles = FALSE)$thresh[[1]]
@@ -148,7 +149,7 @@ for(ii in 1:n2){
   myquantile[ii] <- probs[thresh==mythresh[ii]]
   myscale[ii] <- myres$par[1]
   myshape[ii] <- myres$par[2]
-  mylen[ii] <- myres$num
+  mylen[ii] <- myres$num_excess
 
   #Wadsworth 2016 method
   wadsthresh[ii] <- NHPP.diag(data, u=thresh, plot.out = FALSE, UseQuantiles = FALSE)$thresh[[1]]
@@ -206,12 +207,12 @@ for(ii in 1:n){
   thresh <- quantile(data, probs, names=F)
   
   #EQD method
-  myres <- thresh_qq_metric(data, thresh=thresh)
+  myres <- eqd(data, thresh=thresh)
   mythresh[ii] <- myres$thresh
   myquantile[ii] <- probs[thresh==mythresh[ii]]
   myscale[ii] <- myres$par[1]
   myshape[ii] <- myres$par[2]
-  mylen[ii] <- myres$num
+  mylen[ii] <- myres$num_excess
 
   #Wadsworth 2016 method
   wadsthresh[ii] <- NHPP.diag(data, u=thresh, plot.out = FALSE, UseQuantiles = FALSE)$thresh[[1]]
