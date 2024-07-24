@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+data/Gaussian_large.csv filter=lfs diff=lfs merge=lfs -text
+output/coverage/Alg2_quantile_estimates_case4.rds filter=lfs diff=lfs merge=lfs -text
+output/coverage/Alg2_quantile_estimates_gauss.rds filter=lfs diff=lfs merge=lfs -text
