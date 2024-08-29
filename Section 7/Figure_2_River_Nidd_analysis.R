@@ -7,7 +7,7 @@ data("nidd.thresh")
 thresholds <- quantile(nidd.thresh, seq(0,0.93, by=0.01))
 
 set.seed(11111) 
-EQD_thr <- thresh_qq_metric(nidd.thresh, thresholds, k=200)
+EQD_thr <- eqd(nidd.thresh, thresholds, k=200)
 
 #QQplot with tolerance bounds incorporating parameter uncertainty
 u_hat <- EQD_thr$thresh 
