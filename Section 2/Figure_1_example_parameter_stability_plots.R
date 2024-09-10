@@ -9,7 +9,7 @@ data("nidd.thresh")
 Q_4 <- seq(0,0.95,by=0.05)
 thresh_4 <- quantile(case_4_sample_1, Q_4, names=FALSE)
 
-Q_Nidd <- seq(0,0.95,by=0.04)
+Q_Nidd <- seq(0,0.94,by=0.04)
 thresh_Nidd <- quantile(nidd.thresh,Q_Nidd, names=F)
 
 #Plotting window
