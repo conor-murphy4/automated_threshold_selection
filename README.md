@@ -215,5 +215,5 @@ abline(v=example2$thresh, col="red", lwd=2)
 
 ### Contact
 
-If you have questions, please contact <c.murphy4@lancaser.ac.uk>. Please
-include “Threshold code” in the subject of the email.
+If you have questions, please contact <c.murphy4@lancaster.ac.uk>.
+Please include “Threshold code” in the subject of the email.
