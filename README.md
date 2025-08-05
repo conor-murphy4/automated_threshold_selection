@@ -6,9 +6,11 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-R code used to output figures and tables in the preprint “Automated
+R code used to output figures and tables in the paper “Automated
 threshold selection and associated inference uncertainty for univariate
-extremes” which can be viewed [here](https://arxiv.org/abs/2310.17999) .
+extremes” which can be viewed
+[here](https://www.tandfonline.com/doi/full/10.1080/00401706.2024.2421744)
+.
 
 ## Dependencies
 
